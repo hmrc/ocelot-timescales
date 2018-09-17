@@ -1,0 +1,64 @@
+﻿@model Timescales.Models.Timescale
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Timescale</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UpdatedDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Owners)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Owners)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OldestWorkDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OldestWorkDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Days)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Days)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Basis)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Basis)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
