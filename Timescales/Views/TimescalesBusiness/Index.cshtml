@@ -23,13 +23,13 @@
                 @Html.DisplayNameFor(model => model.Owners)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Basis)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.OldestWorkDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Days)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Basis)
             </th>
             <th></th>
         </tr>
@@ -50,17 +50,17 @@
                 @Html.DisplayFor(modelItem => item.Owners)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Basis)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.OldestWorkDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Days)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Basis)
-            </td>
-            <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>          
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
             </td>
         </tr>
 }

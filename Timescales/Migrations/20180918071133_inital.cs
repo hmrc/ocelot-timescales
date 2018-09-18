@@ -17,7 +17,7 @@ namespace Timescales.Migrations
                     Description = table.Column<string>(nullable: true),
                     Owners = table.Column<string>(nullable: true),
                     OldestWorkDate = table.Column<DateTime>(nullable: false),
-                    Days = table.Column<string>(nullable: true),
+                    Days = table.Column<int>(nullable: false),
                     Basis = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

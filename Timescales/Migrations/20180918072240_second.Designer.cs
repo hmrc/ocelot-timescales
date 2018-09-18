@@ -10,15 +10,15 @@ using Timescales.Models;
 namespace Timescales.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20180917130705_inital")]
-    partial class inital
+    [Migration("20180918072240_second")]
+    partial class second
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.1.2-rtm-30932")
+                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Timescales.Models.Timescale", b =>
@@ -28,15 +28,20 @@ namespace Timescales.Migrations
 
                     b.Property<string>("Basis");
 
-                    b.Property<string>("Days");
+                    b.Property<int>("Days");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(256);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<DateTime>("OldestWorkDate");
 
-                    b.Property<string>("Owners");
+                    b.Property<string>("Owners")
+                        .IsRequired();
 
                     b.Property<DateTime>("UpdatedDate");
 

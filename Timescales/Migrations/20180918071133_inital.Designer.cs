@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Timescales.Models;
@@ -9,9 +10,10 @@ using Timescales.Models;
 namespace Timescales.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20180918071133_inital")]
+    partial class inital
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,23 +26,17 @@ namespace Timescales.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Basis")
-                        .HasMaxLength(10);
+                    b.Property<string>("Basis");
 
                     b.Property<int>("Days");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(256);
+                    b.Property<string>("Description");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                    b.Property<string>("Name");
 
                     b.Property<DateTime>("OldestWorkDate");
 
-                    b.Property<string>("Owners")
-                        .IsRequired();
+                    b.Property<string>("Owners");
 
                     b.Property<DateTime>("UpdatedDate");
 
