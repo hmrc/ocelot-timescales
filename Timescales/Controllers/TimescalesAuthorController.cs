@@ -19,10 +19,72 @@ namespace Timescales.Controllers
         }
 
         // GET: TimescalesAuthor
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Timescales.ToListAsync());
+        //} 
+
+        public IActionResult Index(string sortOrder)
         {
-            return View(await _context.Timescales.ToListAsync());
-        }       
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.UpdatedDateSortParm = sortOrder == "UpdatedDate" ? "updatedDate_desc" : "UpdatedDate";
+            ViewBag.DescriptionSortParm = sortOrder == "Description" ? "description_desc" : "Description";
+            ViewBag.OwnersSortParm = sortOrder == "Owners" ? "owners_desc" : "Owners";
+            ViewBag.BasisSortParm = sortOrder == "Basis" ? "basis_desc" : "Basis";
+            ViewBag.OldestWorkDateSortParm = sortOrder == "OldestWorkDate" ? "oldestWorkDate_desc" : "OldestWorkDate";
+            ViewBag.DaysSortParm = sortOrder == "Days" ? "days_desc" : "Days";
+
+            var timescales = from t in _context.Timescales
+                           select t;
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    timescales = timescales.OrderByDescending(t => t.Name);
+                    break;
+                case "UpdatedDate":
+                    timescales = timescales.OrderBy(t => t.UpdatedDate);
+                    break;
+                case "updatedDate_desc":
+                    timescales = timescales.OrderByDescending(t => t.UpdatedDate);
+                    break;
+                case "Description":
+                    timescales = timescales.OrderBy(t => t.Description);
+                    break;
+                case "description_desc":
+                    timescales = timescales.OrderByDescending(t => t.Description);
+                    break;
+                case "Owners":
+                    timescales = timescales.OrderBy(t => t.Owners);
+                    break;
+                case "owners_desc":
+                    timescales = timescales.OrderByDescending(t => t.Owners);
+                    break;
+                case "Basis":
+                    timescales = timescales.OrderBy(t => t.Basis);
+                    break;
+                case "basis_desc":
+                    timescales = timescales.OrderByDescending(t => t.Basis);
+                    break;
+                case "OldestWorkDate":
+                    timescales = timescales.OrderBy(t => t.OldestWorkDate);
+                    break;
+                case "oldestWorkDate_desc":
+                    timescales = timescales.OrderByDescending(t => t.OldestWorkDate);
+                    break;
+                case "Days":
+                    timescales = timescales.OrderBy(t => t.Days);
+                    break;
+                case "days_desc":
+                    timescales = timescales.OrderByDescending(t => t.Days);
+                    break;
+                default:
+                    timescales = timescales.OrderBy(t => t.Name);
+                    break;
+            }
+            return View(timescales.ToList());
+        }
 
         // GET: TimescalesAuthor/Details/5
         public async Task<IActionResult> Details(Guid? id)

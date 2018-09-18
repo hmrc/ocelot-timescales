@@ -14,25 +14,25 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.ActionLink(@Html.DisplayNameFor(model => model.Name), "Index", new { sortOrder = ViewBag.NameSortParm })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UpdatedDate)
+                @Html.ActionLink(@Html.DisplayNameFor(model => model.UpdatedDate), "Index", new { sortOrder = ViewBag.UpdatedDateSortParm })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.ActionLink(@Html.DisplayNameFor(model => model.Description), "Index", new { sortOrder = ViewBag.DescriptionSortParm })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Owners)
+                @Html.ActionLink(@Html.DisplayNameFor(model => model.Owners), "Index", new { sortOrder = ViewBag.OwnersSortParm })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Basis)
+                @Html.ActionLink(@Html.DisplayNameFor(model => model.Basis), "Index", new { sortOrder = ViewBag.BasisSortParm })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OldestWorkDate)
+                @Html.ActionLink(@Html.DisplayNameFor(model => model.OldestWorkDate), "Index", new { sortOrder = ViewBag.OldestWorkDateSortParm })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Days)
+                @Html.ActionLink(@Html.DisplayNameFor(model => model.Days), "Index", new { sortOrder = ViewBag.DaysSortParm })
             </th>
             <th></th>
         </tr>
