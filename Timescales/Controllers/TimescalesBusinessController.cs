@@ -24,12 +24,6 @@ namespace Timescales.Controllers
             return View(await _context.Timescales.ToListAsync());
         }
 
-        // GET: TimescalesBusiness/About
-        public IActionResult About()
-        {
-            return View();
-        }
-
         // GET: TimescalesBusiness/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {

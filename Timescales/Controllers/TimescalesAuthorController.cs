@@ -22,13 +22,7 @@ namespace Timescales.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Timescales.ToListAsync());
-        }
-
-        // GET: TimescalesAuthor/About
-        public IActionResult About()
-        {
-            return View();
-        }
+        }       
 
         // GET: TimescalesAuthor/Details/5
         public async Task<IActionResult> Details(Guid? id)

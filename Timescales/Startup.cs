@@ -45,12 +45,12 @@ namespace Timescales
             }
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            //app.UseMvc();
+          
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=TimescalesBusiness}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
