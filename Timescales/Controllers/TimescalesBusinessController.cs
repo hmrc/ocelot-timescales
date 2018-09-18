@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,10 +11,12 @@ namespace Timescales.Controllers
     public class TimescalesBusinessController : Controller
     {
         private readonly Context _context;
+        private readonly ILogger<TimescalesBusinessController> _logger;
 
-        public TimescalesBusinessController(Context context)
+        public TimescalesBusinessController(Context context, ILogger<TimescalesBusinessController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: TimescalesBusiness
@@ -26,7 +29,6 @@ namespace Timescales.Controllers
             ViewBag.BasisSortParm = sortOrder == "Basis" ? "basis_desc" : "Basis";
             ViewBag.OldestWorkDateSortParm = sortOrder == "OldestWorkDate" ? "oldestWorkDate_desc" : "OldestWorkDate";
             ViewBag.DaysSortParm = sortOrder == "Days" ? "days_desc" : "Days";
-
 
             var timescales = from t in _context.Timescales
                              select t;
@@ -155,7 +157,7 @@ namespace Timescales.Controllers
             {
                 return NotFound();
             }
-
+           
             if (ModelState.IsValid)
             {
                 try
@@ -185,4 +187,6 @@ namespace Timescales.Controllers
             return _context.Timescales.Any(e => e.Id == id);
         }
     }
+
+   
 }

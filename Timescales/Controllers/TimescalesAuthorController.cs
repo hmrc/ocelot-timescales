@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,10 +11,12 @@ namespace Timescales.Controllers
     public class TimescalesAuthorController : Controller
     {
         private readonly Context _context;
+        private readonly ILogger<TimescalesAuthorController> _logger;
 
-        public TimescalesAuthorController(Context context)
+        public TimescalesAuthorController(Context context, ILogger<TimescalesAuthorController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: TimescalesAuthor  
