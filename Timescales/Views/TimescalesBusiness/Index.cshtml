@@ -5,64 +5,73 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index Business</h2>
+<h2>Business Timescales</h2>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Find by name or description: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.ActionLink(@Html.DisplayNameFor(model => model.Name), "Index", new { sortOrder = ViewBag.NameSortParm })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UpdatedDate)
+                @Html.ActionLink(@Html.DisplayNameFor(model => model.UpdatedDate), "Index", new { sortOrder = ViewBag.UpdatedDateSortParm })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.ActionLink(@Html.DisplayNameFor(model => model.Description), "Index", new { sortOrder = ViewBag.DescriptionSortParm })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Owners)
+                @Html.ActionLink(@Html.DisplayNameFor(model => model.Owners), "Index", new { sortOrder = ViewBag.OwnersSortParm })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Basis)
+                @Html.ActionLink(@Html.DisplayNameFor(model => model.Basis), "Index", new { sortOrder = ViewBag.BasisSortParm })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OldestWorkDate)
+                @Html.ActionLink(@Html.DisplayNameFor(model => model.OldestWorkDate), "Index", new { sortOrder = ViewBag.OldestWorkDateSortParm })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Days)
+                @Html.ActionLink(@Html.DisplayNameFor(model => model.Days), "Index", new { sortOrder = ViewBag.DaysSortParm })
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Owners)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Basis)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OldestWorkDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Days)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Owners)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Basis)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OldestWorkDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Days)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

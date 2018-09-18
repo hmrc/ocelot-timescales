@@ -4,7 +4,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Timescales.Models;
-using PagedList;
 
 namespace Timescales.Controllers
 {
@@ -19,8 +18,7 @@ namespace Timescales.Controllers
 
         // GET: TimescalesAuthor  
         public IActionResult Index(string sortOrder, string searchString)
-        {
-            ViewBag.CurrentSort = sortOrder;
+        {           
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.UpdatedDateSortParm = sortOrder == "UpdatedDate" ? "updatedDate_desc" : "UpdatedDate";
             ViewBag.DescriptionSortParm = sortOrder == "Description" ? "description_desc" : "Description";
