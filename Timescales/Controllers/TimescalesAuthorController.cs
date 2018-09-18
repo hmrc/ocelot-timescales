@@ -18,12 +18,7 @@ namespace Timescales.Controllers
             _context = context;
         }
 
-        // GET: TimescalesAuthor
-        //public async Task<IActionResult> Index()
-        //{
-        //    return View(await _context.Timescales.ToListAsync());
-        //} 
-
+        // GET: TimescalesAuthor  
         public IActionResult Index(string sortOrder)
         {
             ViewBag.CurrentSort = sortOrder;
