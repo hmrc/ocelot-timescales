@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Timescales.Models;
+using PagedList;
 
 namespace Timescales.Controllers
 {
@@ -19,7 +18,7 @@ namespace Timescales.Controllers
         }
 
         // GET: TimescalesAuthor  
-        public IActionResult Index(string sortOrder)
+        public IActionResult Index(string sortOrder, string searchString)
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -30,8 +29,15 @@ namespace Timescales.Controllers
             ViewBag.OldestWorkDateSortParm = sortOrder == "OldestWorkDate" ? "oldestWorkDate_desc" : "OldestWorkDate";
             ViewBag.DaysSortParm = sortOrder == "Days" ? "days_desc" : "Days";
 
+
             var timescales = from t in _context.Timescales
                            select t;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                timescales = timescales.Where(s => s.Name.ToUpper().Contains(searchString.ToUpper()) ||
+                                                   s.Description.ToUpper().Contains(searchString.ToUpper()));
+            }
 
             switch (sortOrder)
             {
