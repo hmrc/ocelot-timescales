@@ -9,5 +9,12 @@ namespace Timescales.Models
         { }
 
         public DbSet<Timescale> Timescales { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Timescale>()
+                .HasIndex(t => t.Placeholder)
+                .IsUnique();
+        }
     }
 }

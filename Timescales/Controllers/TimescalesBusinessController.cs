@@ -23,6 +23,7 @@ namespace Timescales.Controllers
         public IActionResult Index(string sortOrder, string searchString)
         {
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.PlaceholderSortParm = sortOrder == "Placeholder" ? "placeholder_desc" : "Placeholder";
             ViewBag.UpdatedDateSortParm = sortOrder == "UpdatedDate" ? "updatedDate_desc" : "UpdatedDate";
             ViewBag.DescriptionSortParm = sortOrder == "Description" ? "description_desc" : "Description";
             ViewBag.OwnersSortParm = sortOrder == "Owners" ? "owners_desc" : "Owners";
@@ -43,6 +44,12 @@ namespace Timescales.Controllers
             {
                 case "name_desc":
                     timescales = timescales.OrderByDescending(t => t.Name);
+                    break;
+                case "Placeholder":
+                    timescales = timescales.OrderBy(t => t.Placeholder);
+                    break;
+                case "placeholder_desc":
+                    timescales = timescales.OrderByDescending(t => t.Placeholder);
                     break;
                 case "UpdatedDate":
                     timescales = timescales.OrderBy(t => t.UpdatedDate);
@@ -117,7 +124,7 @@ namespace Timescales.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Owners,OldestWorkDate,Days,Basis")] Timescale timescale)
+        public async Task<IActionResult> Create([Bind("Id,Placeholder,Name,Description,Owners,OldestWorkDate,Days,Basis")] Timescale timescale)
         {
             if (ModelState.IsValid)
             {
@@ -151,7 +158,7 @@ namespace Timescales.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Description,Owners,OldestWorkDate,Days,Basis")] Timescale timescale)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Placeholder,Name,Description,Owners,OldestWorkDate,Days,Basis")] Timescale timescale)
         {
             if (id != timescale.Id)
             {

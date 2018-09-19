@@ -14,10 +14,11 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Placeholder" />
             <input type="hidden" asp-for="Name" />
             <input type="hidden" asp-for="Description" />
             <input type="hidden" asp-for="Owners" />
-            <input type="hidden" asp-for="Basis" />     
+            <input type="hidden" asp-for="Basis" />
             <div class="form-group">
                 <label asp-for="OldestWorkDate" class="control-label"></label>
                 <input asp-for="OldestWorkDate" class="form-control" />

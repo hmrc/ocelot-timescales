@@ -6,12 +6,17 @@ namespace Timescales.Models
 {
     public class Timescale
     {
-        [Key]
+        [Key]      
         public Guid Id { get; set; }
+
+        [DisplayName("Placeholder")]
+        [Required(ErrorMessage = "Placeholder Required")]
+        [MaxLength(60, ErrorMessage = "Placeholder Too Long")]
+        public string Placeholder { get; set; }
 
         [DisplayName("Name")]
         [Required(ErrorMessage = "Name Required")]
-        [MaxLength(50, ErrorMessage = "Name Too Long")]
+        [MaxLength(256, ErrorMessage = "Name Too Long")]
         public string Name { get; set; }
 
         [DisplayName("Updated Date")]
