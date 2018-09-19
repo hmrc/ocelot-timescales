@@ -1,5 +1,3 @@
-using System;
-
 namespace Timescales.Models
 {
     public class ErrorViewModel
