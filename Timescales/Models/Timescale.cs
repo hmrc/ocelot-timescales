@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,6 +13,7 @@ namespace Timescales.Models
         [DisplayName("Placeholder")]
         [Required(ErrorMessage = "Placeholder Required")]
         [MaxLength(60, ErrorMessage = "Placeholder Too Long")]
+        [Remote("CheckPlaceholderExist", "Validation", ErrorMessage = "Placeholder already taken", HttpMethod = "POST")]
         public string Placeholder { get; set; }
 
         [DisplayName("Name")]
@@ -32,6 +34,7 @@ namespace Timescales.Models
         [DisplayName("Owners")]
         [Required(ErrorMessage = "Owners Required")]
         [MinLength(7, ErrorMessage = "Owners Too Short")]
+        [RegularExpression("^\\d{7}(,\\d{7})*$", ErrorMessage = "Owners must be single PID or comma separated PIDs eg. 1111111,2222222")]
         public String Owners { get; set; }
 
         [DisplayName("Oldest Work Date")]
