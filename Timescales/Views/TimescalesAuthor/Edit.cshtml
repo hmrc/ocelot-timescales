@@ -32,7 +32,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="Basis" class="control-label"></label>
-                <input asp-for="Basis" class="form-control" />
+                <select asp-for="Basis" class="form-control">
+                    <option value="Working">Working</option>
+                    <option value="Calender">Calender</option>
+                    <option value="Notbh">Notbh</option>
+                </select>
                 <span asp-validation-for="Basis" class="text-danger"></span>
             </div>
             <div class="form-group">
