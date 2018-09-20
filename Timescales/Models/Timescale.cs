@@ -13,6 +13,7 @@ namespace Timescales.Models
         [DisplayName("Placeholder")]
         [Required(ErrorMessage = "Placeholder Required")]
         [MaxLength(60, ErrorMessage = "Placeholder Too Long")]
+        [RegularExpression(@"^\S*$", ErrorMessage = "Placeholder may not contain spaces")]
         [Remote("CheckPlaceholderExist", "Validation", ErrorMessage = "Placeholder already taken", HttpMethod = "POST")]
         public string Placeholder { get; set; }
 
