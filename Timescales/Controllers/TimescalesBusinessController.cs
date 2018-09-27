@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Timescales.Models;
 
 namespace Timescales.Controllers
-{
+{    
     public class TimescalesBusinessController : Controller
     {
         private readonly Context _context;
@@ -19,7 +19,7 @@ namespace Timescales.Controllers
             _logger = logger;
         }
 
-        // GET: TimescalesBusiness
+        // GET: TimescalesBusiness       
         public IActionResult Index(string sortOrder, string searchString)
         {
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -117,25 +117,7 @@ namespace Timescales.Controllers
         public IActionResult Create()
         {
             return View();
-        }
-
-        // POST: TimescalesBusiness/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Placeholder,Name,Description,Owners,OldestWorkDate,Days,Basis")] Timescale timescale)
-        {
-            if (ModelState.IsValid)
-            {
-                timescale.Id = Guid.NewGuid();
-                timescale.UpdatedDate = DateTime.Now;
-                _context.Add(timescale);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(timescale);
-        }
+        }        
 
         // GET: TimescalesBusiness/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
@@ -150,6 +132,7 @@ namespace Timescales.Controllers
             {
                 return NotFound();
             }
+           
             return View(timescale);
         }
 
@@ -164,7 +147,12 @@ namespace Timescales.Controllers
             {
                 return NotFound();
             }
-           
+            else if (!timescale.Owners.Contains(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)))
+            {
+                ViewBag.UserMessage = "You are not authorised to edit this timescale.";
+                return View(timescale);
+            }
+
             if (ModelState.IsValid)
             {
                 try
@@ -194,6 +182,4 @@ namespace Timescales.Controllers
             return _context.Timescales.Any(e => e.Id == id);
         }
     }
-
-   
 }
