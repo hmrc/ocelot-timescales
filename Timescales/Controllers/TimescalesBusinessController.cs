@@ -112,13 +112,7 @@ namespace Timescales.Controllers
             }
 
             return View(timescale);
-        }
-
-        // GET: TimescalesBusiness/Create
-        public IActionResult Create()
-        {
-            return View();
-        }        
+        }       
 
         // GET: TimescalesBusiness/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
