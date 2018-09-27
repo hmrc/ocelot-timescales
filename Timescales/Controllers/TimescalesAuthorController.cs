@@ -5,7 +5,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Timescales.Models;
-using Newtonsoft.Json;
 
 namespace Timescales.Controllers
 {

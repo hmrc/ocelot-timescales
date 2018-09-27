@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Timescales.Models;
+using System;
+using Microsoft.AspNetCore.Server.HttpSys;
 
 namespace Timescales
 {
@@ -26,13 +28,20 @@ namespace Timescales
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+       
             services.AddDbContext<Context>(options =>
                 options
                     .UseNpgsql(Configuration
-                        .GetConnectionString("DefaultConnection")));
+                        .GetConnectionString("DefaultConnection") +
+                            Environment.GetEnvironmentVariable("Connection", EnvironmentVariableTarget.Machine)));
 
+            services.AddAuthentication(HttpSysDefaults.AuthenticationScheme);
             services.AddMvc();
+            services.Configure<IISOptions>(c =>
+            {
+                c.ForwardClientCertificate = true;
+                c.AutomaticAuthentication = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,11 +61,18 @@ namespace Timescales
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<Context>();
+
+                context.Database.EnsureCreated();
+            }
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller}/{action=Index}/{id?}");
             });
         }
     }
