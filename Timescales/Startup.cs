@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Timescales.Models;
 using System;
 using Microsoft.AspNetCore.Server.HttpSys;
+using System.Xml.Serialization;
 
 namespace Timescales
 {
@@ -35,7 +36,7 @@ namespace Timescales
                         .GetConnectionString("DefaultConnection") +
                             Environment.GetEnvironmentVariable("Connection", EnvironmentVariableTarget.Machine)));
 
-            services.AddAuthentication(HttpSysDefaults.AuthenticationScheme);
+            services.AddAuthentication(HttpSysDefaults.AuthenticationScheme);   
             services.AddMvc();
             services.Configure<IISOptions>(c =>
             {

@@ -91,6 +91,7 @@ namespace Timescales.Controllers
                     timescales = timescales.OrderBy(t => t.Name);
                     break;
             }
+            
             return View(timescales.ToList());
         }
 

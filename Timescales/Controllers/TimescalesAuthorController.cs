@@ -2,21 +2,26 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Timescales.Models;
+using System.Data.Odbc;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace Timescales.Controllers
 {
     public class TimescalesAuthorController : Controller
     {
         private readonly Context _context;
-        private readonly ILogger<TimescalesAuthorController> _logger;
+        private readonly ILogger<TimescalesAuthorController> _logger;  
 
         public TimescalesAuthorController(Context context, ILogger<TimescalesAuthorController> logger)
         {
             _context = context;
-            _logger = logger;
+            _logger = logger;         
         }
 
         // GET: TimescalesAuthor  
@@ -128,6 +133,12 @@ namespace Timescales.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Placeholder,Name,Description,Owners,OldestWorkDate,Days,Basis")] Timescale timescale)
         {
+            if (!IsAuthedRole(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)))
+            {
+                ViewBag.UserMessage = "You are not authorised to create a timescale.";
+                return View(timescale);
+            }
+
             if (ModelState.IsValid)
             {
                 timescale.Id = Guid.NewGuid();
@@ -165,6 +176,11 @@ namespace Timescales.Controllers
             if (id != timescale.Id)
             {
                 return NotFound();
+            }
+            else if (!IsAuthedRole(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)))
+            {
+                ViewBag.UserMessage = "You are not authorised to edit this timescale.";
+                return View(timescale);
             }
 
             if (ModelState.IsValid)
@@ -215,6 +231,13 @@ namespace Timescales.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var timescale = await _context.Timescales.FindAsync(id);
+
+            if (!IsAuthedRole(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)))
+            {
+                ViewBag.UserMessage = "You are not authorised to delete this timescale.";
+                return View(timescale);
+            }
+
             _context.Timescales.Remove(timescale);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -223,6 +246,30 @@ namespace Timescales.Controllers
         private bool TimescaleExists(Guid id)
         {
             return _context.Timescales.Any(e => e.Id == id);
+        }
+
+        private bool IsAuthedRole(string pid)
+        {
+            FileInfo file = new FileInfo(Environment.GetEnvironmentVariable("StaffList", EnvironmentVariableTarget.Machine));
+
+            XmlDocument xml = new XmlDocument();
+            xml.Load(file.FullName);
+            var nodelocation = $"dataroot/Entry[PID='{@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)}']";
+            var entry = xml.SelectSingleNode(nodelocation);
+
+            if(entry == null)
+            {
+                return false;
+            }
+
+            var role = entry.SelectSingleNode("Role").InnerText;
+
+            if (role == "Admin" || role == "IPDM")
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
