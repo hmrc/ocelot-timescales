@@ -17,11 +17,11 @@ namespace Timescales.Api
             _context = context;
         }
 
-        // GET: api/Timescales
-        [HttpGet]
+        // GET: api/Timescales      
+        [HttpGet]   
         public IEnumerable<Timescale> GetTimescales()
         {
-            return _context.Timescales;
+            return _context.Timescales;           
         }
 
         // GET: api/Timescales/5

@@ -2,14 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Security.Principal;
 using System.Threading.Tasks;
-using Timescales.Models;
-using System.Data.Odbc;
 using System.Xml;
-using System.Xml.Linq;
+using Timescales.Models;
 
 namespace Timescales.Controllers
 {
@@ -250,10 +249,19 @@ namespace Timescales.Controllers
 
         private bool IsAuthedRole(string pid)
         {
-            FileInfo file = new FileInfo(Environment.GetEnvironmentVariable("StaffList", EnvironmentVariableTarget.Machine));
+            var file = Environment.GetEnvironmentVariable("StaffList", EnvironmentVariableTarget.Machine);
+            XmlDocument xml = new XmlDocument();        
+            string textFromPage;
 
-            XmlDocument xml = new XmlDocument();
-            xml.Load(file.FullName);
+            WebClient web = new WebClient();
+            web.Credentials = CredentialCache.DefaultCredentials;
+            Stream stream = web.OpenRead(file);
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                textFromPage = reader.ReadToEnd();
+            }
+            xml.LoadXml(textFromPage);          
+
             var nodelocation = $"dataroot/Entry[PID='{@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)}']";
             var entry = xml.SelectSingleNode(nodelocation);
 
