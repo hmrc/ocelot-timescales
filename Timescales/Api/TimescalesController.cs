@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Timescales.Api
         {
             _context = context;
         }
-
+        
         // GET: api/Timescales      
         [HttpGet]   
         public IEnumerable<Timescale> GetTimescales()

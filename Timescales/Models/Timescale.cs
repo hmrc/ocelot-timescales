@@ -48,8 +48,31 @@ namespace Timescales.Models
         public int Days { get; set; }
 
         [DisplayName("Basis")]
+        [Required(ErrorMessage = "Basis Required")]
         [MaxLength(10, ErrorMessage = "Basis Too Long")]
         public string Basis { get; set; }
+
+
+        private string _lineOfBusiness;
+
+        [DisplayName("Line Of Business")]
+        [Required(ErrorMessage = "Line Of Business Required")]
+        [MinLength(3, ErrorMessage = "Line Of Business Too Short")]
+        [MaxLength(3, ErrorMessage = "Line Of Business Too Long")] 
+        public string LineOfBusiness
+        {
+            get
+            {
+                return _lineOfBusiness;
+            }
+            set
+            {
+                if (_lineOfBusiness != value.ToUpper())
+                {
+                    _lineOfBusiness = value.ToUpper();
+                }
+            }
+        }
     }
 }
 

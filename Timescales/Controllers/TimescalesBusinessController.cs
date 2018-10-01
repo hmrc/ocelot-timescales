@@ -24,12 +24,8 @@ namespace Timescales.Controllers
         {
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.PlaceholderSortParm = sortOrder == "Placeholder" ? "placeholder_desc" : "Placeholder";
-            ViewBag.UpdatedDateSortParm = sortOrder == "UpdatedDate" ? "updatedDate_desc" : "UpdatedDate";
             ViewBag.DescriptionSortParm = sortOrder == "Description" ? "description_desc" : "Description";
-            ViewBag.OwnersSortParm = sortOrder == "Owners" ? "owners_desc" : "Owners";
-            ViewBag.BasisSortParm = sortOrder == "Basis" ? "basis_desc" : "Basis";
-            ViewBag.OldestWorkDateSortParm = sortOrder == "OldestWorkDate" ? "oldestWorkDate_desc" : "OldestWorkDate";
-            ViewBag.DaysSortParm = sortOrder == "Days" ? "days_desc" : "Days";
+            ViewBag.OldestWorkDateSortParm = sortOrder == "LineOfBusiness" ? "lineOfBusiness_desc" : "LineOfBusiness";
 
             var timescales = from t in _context.Timescales
                              select t;
@@ -37,7 +33,10 @@ namespace Timescales.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 timescales = timescales.Where(s => s.Name.ToUpper().Contains(searchString.ToUpper()) ||
-                                                   s.Description.ToUpper().Contains(searchString.ToUpper()));
+                                                   s.Description.ToUpper().Contains(searchString.ToUpper()) ||
+                                                   s.Placeholder.ToUpper().Contains(searchString.ToUpper()) ||
+                                                   s.LineOfBusiness.ToUpper().Contains(searchString.ToUpper())
+                                                   );
             }
 
             switch (sortOrder)
@@ -51,47 +50,22 @@ namespace Timescales.Controllers
                 case "placeholder_desc":
                     timescales = timescales.OrderByDescending(t => t.Placeholder);
                     break;
-                case "UpdatedDate":
-                    timescales = timescales.OrderBy(t => t.UpdatedDate);
-                    break;
-                case "updatedDate_desc":
-                    timescales = timescales.OrderByDescending(t => t.UpdatedDate);
-                    break;
                 case "Description":
                     timescales = timescales.OrderBy(t => t.Description);
                     break;
                 case "description_desc":
                     timescales = timescales.OrderByDescending(t => t.Description);
                     break;
-                case "Owners":
-                    timescales = timescales.OrderBy(t => t.Owners);
+                case "LineOfBusiness":
+                    timescales = timescales.OrderBy(t => t.LineOfBusiness);
                     break;
-                case "owners_desc":
-                    timescales = timescales.OrderByDescending(t => t.Owners);
-                    break;
-                case "Basis":
-                    timescales = timescales.OrderBy(t => t.Basis);
-                    break;
-                case "basis_desc":
-                    timescales = timescales.OrderByDescending(t => t.Basis);
-                    break;
-                case "OldestWorkDate":
-                    timescales = timescales.OrderBy(t => t.OldestWorkDate);
-                    break;
-                case "oldestWorkDate_desc":
-                    timescales = timescales.OrderByDescending(t => t.OldestWorkDate);
-                    break;
-                case "Days":
-                    timescales = timescales.OrderBy(t => t.Days);
-                    break;
-                case "days_desc":
-                    timescales = timescales.OrderByDescending(t => t.Days);
+                case "lineOfBusiness":
+                    timescales = timescales.OrderByDescending(t => t.LineOfBusiness);
                     break;
                 default:
                     timescales = timescales.OrderBy(t => t.Name);
                     break;
             }
-            
             return View(timescales.ToList());
         }
 
@@ -136,7 +110,7 @@ namespace Timescales.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Placeholder,Name,Description,Owners,OldestWorkDate,Days,Basis")] Timescale timescale)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Placeholder,Name,Description,Owners,OldestWorkDate,Days,Basis,LineOfBusiness")] Timescale timescale)
         {
             if (id != timescale.Id)
             {

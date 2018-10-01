@@ -13,7 +13,7 @@
 @using (Html.BeginForm())
 {
     <p>
-        Find by name, description or placeholder: @Html.TextBox("SearchString")
+        @Html.TextBox("SearchString")
         <input type="submit" value="Search" />
     </p>
 }
@@ -26,62 +26,38 @@
             </th>
             <th>
                 @Html.ActionLink(@Html.DisplayNameFor(model => model.Name), "Index", new { sortOrder = ViewBag.NameSortParm })
-            </th>
-            <th>
-                @Html.ActionLink(@Html.DisplayNameFor(model => model.UpdatedDate), "Index", new { sortOrder = ViewBag.UpdatedDateSortParm })
-            </th>
+            </th>           
             <th>
                 @Html.ActionLink(@Html.DisplayNameFor(model => model.Description), "Index", new { sortOrder = ViewBag.DescriptionSortParm })
-            </th>
+            </th>         
             <th>
-                @Html.ActionLink(@Html.DisplayNameFor(model => model.Owners), "Index", new { sortOrder = ViewBag.OwnersSortParm })
-            </th>
-            <th>
-                @Html.ActionLink(@Html.DisplayNameFor(model => model.Basis), "Index", new { sortOrder = ViewBag.BasisSortParm })
-            </th>
-            <th>
-                @Html.ActionLink(@Html.DisplayNameFor(model => model.OldestWorkDate), "Index", new { sortOrder = ViewBag.OldestWorkDateSortParm })
-            </th>
-            <th>
-                @Html.ActionLink(@Html.DisplayNameFor(model => model.Days), "Index", new { sortOrder = ViewBag.DaysSortParm })
-            </th>
+                @Html.ActionLink(@Html.DisplayNameFor(model => model.LineOfBusiness), "Index", new { sortOrder = ViewBag.LineOfBusinessParm })
+            </th>           
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Placeholder)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Owners)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Basis)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OldestWorkDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Days)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Placeholder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>               
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>            
+                <td>
+                    @Html.DisplayFor(modelItem => item.LineOfBusiness)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
