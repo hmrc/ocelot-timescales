@@ -28,7 +28,7 @@ namespace Timescales.Controllers
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.PlaceholderSortParm = sortOrder == "Placeholder" ? "placeholder_desc" : "Placeholder";           
             ViewBag.DescriptionSortParm = sortOrder == "Description" ? "description_desc" : "Description";       
-            ViewBag.OldestWorkDateSortParm = sortOrder == "LineOfBusiness" ? "lineOfBusiness_desc" : "LineOfBusiness";           
+            ViewBag.LineOfBusinessParm = sortOrder == "LineOfBusiness" ? "lineOfBusiness_desc" : "LineOfBusiness";           
 
             var timescales = from t in _context.Timescales
                            select t;
@@ -62,7 +62,7 @@ namespace Timescales.Controllers
                 case "LineOfBusiness":
                     timescales = timescales.OrderBy(t => t.LineOfBusiness);
                     break;
-                case "lineOfBusiness":
+                case "lineOfBusiness_desc":
                     timescales = timescales.OrderByDescending(t => t.LineOfBusiness);
                     break;               
                 default:
