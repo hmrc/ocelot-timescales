@@ -11,7 +11,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "TimescalesBusiness",
+      "launchUrl": "Timescalesauthor",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

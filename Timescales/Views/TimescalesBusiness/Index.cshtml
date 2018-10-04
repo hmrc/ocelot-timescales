@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
-    ViewData["Header"] = "Business Timescales";
+    ViewData["Header"] = "businessTimescalesEditor";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,7 +11,7 @@
     <p class="form-group">
         @Html.TextBox("SearchString", null, new { @class = "form-control" })
         <p class="form-text text-muted">Look for an existing timescale</p>
-        <input type="submit" class="btn btn-primary" value="Search" />
+        <input type="submit" class="btn btn-primary" value="Search"/>
     </p>
 }
 
