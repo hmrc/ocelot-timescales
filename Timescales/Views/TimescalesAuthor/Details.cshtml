@@ -2,72 +2,92 @@
 
 @{
     ViewData["Title"] = "Details";
+    ViewData["Header"] = "Author Timescales";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Details</h2>
 
-<div>
-    <h4>Timescale</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Placeholder)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Placeholder)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Owners)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Owners)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Basis)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Basis)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LineOfBusiness)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LineOfBusiness)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.OldestWorkDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.OldestWorkDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Days)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Days)
-        </dd>
-    </dl>
+<div>  
+    <table class="table">        
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Placeholder)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Placeholder)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Name)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.UpdatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.UpdatedDate)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Description)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Owners)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Owners)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Basis)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Basis)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.LineOfBusiness)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.LineOfBusiness)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.OldestWorkDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.OldestWorkDate)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Days)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Days)
+                </td>
+            </tr>
+        </tbody>
+    </table>    
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    <a class="btn btn-primary" asp-action="Index">Back to List</a>
 </div>

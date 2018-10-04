@@ -16,20 +16,30 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />     
     </environment>
 </head>
-<body>
-    <nav class="navbar navbar-inverse navbar-fixed-top" >
-        <div class="container">           
-            <div class="navbar-collapse collapse">                
-                <p class="nav navbar-text navbar-right">@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)</p>
+<body style="background-color: #e5f7ff;">
+    
+    <nav class="navbar fixed-top">
+        <form class="form-inline">
+            <a class="navbar-brand" href="../index.htm"><i class="fa fa-paw" aria-hidden="true"></i> &nbsp;ocelot.<span class="text-muted">timescalesEditor</span><span style="display:none;" id="dev">.Development</span></a>
+
+            <div class="btn-toolbar mr-2" role="toolbar">
+                <div class="btn-group" role="group">
+                    <button class='btn btn-secondary cmd-report-bug' type='button' title="Report a Bug"><i class="fa fa-bug" aria-hidden="true"></i><span hidden> &nbsp;Report a bug</span></button>
+                    <button class="btn btn-secondary cmd-report-need" type="button" title="Suggest a user need"><i class="fa fa-commenting-o" aria-hidden="true"></i><span hidden> &nbsp;Suggestions</span></button>
+                </div>
             </div>
-        </div>
+        </form>
+
     </nav>
+    @*<nav class="navbar navbar-expand-md navbar-light fixed-top">
+        <div class="row">       
+            <p class="nav navbar-text">@ViewData["Header"]</p> 
+        </div>
+    </nav>*@
+
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2018 - Timescales</p>
-        </footer>
+        <hr />        
     </div>
 
     <environment include="Development">
@@ -44,8 +54,8 @@
                 crossorigin="anonymous"
                 integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
         </script>
-        <script src="~/lib/bootstrap/css/bootstrap.css" 
-                asp-fallback-src="~/lib/bootstrap/css/bootstrap.css" 
+        <script src="~/lib/bootstrap/css/bootstrap.css"
+                asp-fallback-src="~/lib/bootstrap/css/bootstrap.css"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
                 crossorigin="anonymous"
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">

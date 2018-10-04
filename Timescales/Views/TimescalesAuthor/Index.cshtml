@@ -2,19 +2,20 @@
 
 @{
     ViewData["Title"] = "Index";
+    ViewData["Header"] = "Author Timescales";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Author Timescales</h2>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
 </p>
 
 @using (Html.BeginForm())
 {
-    <p>
-        @Html.TextBox("SearchString")
-        <input type="submit" value="Search" />
+    <p class="form-group">
+        @Html.TextBox("SearchString", null, new { @class = "form-control" })
+        <p class="form-text text-muted">Look for an existing timescale</p>
+        <input type="submit" class="btn btn-primary" value="Search" />
     </p>
 }
 
@@ -53,9 +54,9 @@
                     @Html.DisplayFor(modelItem => item.LineOfBusiness)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                    <a class="btn btn-primary" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }

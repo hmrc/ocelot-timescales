@@ -36,7 +36,7 @@ namespace Timescales.Models
         [Required(ErrorMessage = "Owners Required")]
         [MinLength(7, ErrorMessage = "Owners Too Short")]
         [RegularExpression("^\\d{7}(,\\d{7})*$", ErrorMessage = "Owners must be single PID or comma separated PIDs eg. 1111111,2222222")]
-        public String Owners { get; set; }
+        public string Owners { get; set; }
 
         [DisplayName("Oldest Work Date")]
         [Required(ErrorMessage = "Oldest Work Date Required")]
