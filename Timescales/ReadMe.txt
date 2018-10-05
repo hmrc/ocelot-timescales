@@ -7,6 +7,3 @@ Variable Value: Server=[SERVER LOCATION];User Id=[USERID];Password=[PASSWORD]
 Variable Name: StaffList
 Variable Value: [LOCATION]\[FILENAME].xml
 --------------------------------------------------------------------------------------
-Variable Name: CSS
-Variable Value: [LOCATION]\[FILENAME].css
---------------------------------------------------------------------------------------
