@@ -218,6 +218,25 @@ namespace Timescales.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Audit(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var timescale = await _context.Timescales
+                                    .Include(a => a.Audit)
+                                    .Where(t => t.Id == id)
+                                    .FirstOrDefaultAsync();
+
+            if (timescale == null)
+            {
+                return NotFound();
+            }
+            return View(timescale);
+        }
+
         private bool TimescaleExists(Guid id)
         {
             return _context.Timescales.Any(e => e.Id == id);

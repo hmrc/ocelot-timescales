@@ -1,0 +1,59 @@
+﻿@model Timescales.Models.Timescale
+
+@{
+    ViewData["Title"] = "Audit";
+    ViewData["Header"] = "authorTimescalesEditor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Audit</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Audit.FirstOrDefault().User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Audit.FirstOrDefault().Action)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Audit.FirstOrDefault().DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Audit.FirstOrDefault().OldestWorkDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Audit.FirstOrDefault().Days)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Audit)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Action)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OldestWorkDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Days)
+                </td>              
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a class="btn btn-primary" asp-action="Details" asp-route-id="@Model.Id">Details</a>   
+</div>
+
