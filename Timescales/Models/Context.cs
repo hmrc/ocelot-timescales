@@ -10,6 +10,8 @@ namespace Timescales.Models
 
         public DbSet<Timescale> Timescales { get; set; }
 
+        public DbSet<Audit> Audits { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Timescale>()
