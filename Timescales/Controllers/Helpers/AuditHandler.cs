@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
+using Timescales.Controllers.Helpers.Interfaces;
 using Timescales.Models;
 
 namespace Timescales.Controllers.Helpers

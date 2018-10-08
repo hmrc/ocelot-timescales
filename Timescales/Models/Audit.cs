@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Xml.Serialization;
 
 namespace Timescales.Models
 {
@@ -36,6 +38,8 @@ namespace Timescales.Models
         [Required(ErrorMessage = "Days Required")]
         public int Days { get; set; }
 
+        [JsonIgnore]
+        [XmlIgnore]
         public virtual Timescale Timescale { get; set; }
     }
 }

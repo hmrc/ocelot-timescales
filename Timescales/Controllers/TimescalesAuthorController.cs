@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Xml;
-using Timescales.Controllers.Helpers;
+using Timescales.Controllers.Helpers.Interfaces;
 using Timescales.Models;
 
 namespace Timescales.Controllers
@@ -17,12 +17,15 @@ namespace Timescales.Controllers
         private readonly Context _context;
         private readonly ILogger<TimescalesAuthorController> _logger;
         private readonly IAuditHandler _auditHandler;
+        private readonly IPublishHandler _publishHandler;
 
-        public TimescalesAuthorController(Context context, ILogger<TimescalesAuthorController> logger, IAuditHandler auditHandler)
+        public TimescalesAuthorController(Context context, ILogger<TimescalesAuthorController> logger, 
+                                            IAuditHandler auditHandler, IPublishHandler publishHandler)
         {
             _context = context;
             _logger = logger;
             _auditHandler = auditHandler;
+            _publishHandler = publishHandler;
         }
 
         // GET: TimescalesAuthor  
@@ -119,6 +122,7 @@ namespace Timescales.Controllers
                 _context.Add(timescale);
                 await _context.SaveChangesAsync();
                 await _auditHandler.AddAuditLog("Create", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
+                await _publishHandler.Publish();
                 return RedirectToAction(nameof(Index));
             }
             return View(timescale);
@@ -177,6 +181,7 @@ namespace Timescales.Controllers
                     }
                 }
                 await _auditHandler.AddAuditLog("Edit", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
+                await _publishHandler.Publish();
                 return RedirectToAction(nameof(Index));
             }
             return View(timescale);
@@ -214,7 +219,8 @@ namespace Timescales.Controllers
             }
 
             _context.Timescales.Remove(timescale);
-            await _context.SaveChangesAsync();         
+            await _context.SaveChangesAsync();
+            await _publishHandler.Publish();
             return RedirectToAction(nameof(Index));
         }
 

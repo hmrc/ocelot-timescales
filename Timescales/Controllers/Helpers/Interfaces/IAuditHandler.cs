@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Timescales.Models;
 
-namespace Timescales.Controllers.Helpers
+namespace Timescales.Controllers.Helpers.Interfaces
 {
     public interface IAuditHandler
     {
