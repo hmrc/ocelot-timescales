@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Xml;
+using Timescales.Controllers.Helpers;
 using Timescales.Models;
 
 namespace Timescales.Controllers
@@ -14,12 +15,14 @@ namespace Timescales.Controllers
     public class TimescalesAuthorController : Controller
     {
         private readonly Context _context;
-        private readonly ILogger<TimescalesAuthorController> _logger;  
+        private readonly ILogger<TimescalesAuthorController> _logger;
+        private readonly IAuditHandler _auditHandler;
 
-        public TimescalesAuthorController(Context context, ILogger<TimescalesAuthorController> logger)
+        public TimescalesAuthorController(Context context, ILogger<TimescalesAuthorController> logger, IAuditHandler auditHandler)
         {
             _context = context;
-            _logger = logger;         
+            _logger = logger;
+            _auditHandler = auditHandler;
         }
 
         // GET: TimescalesAuthor  
@@ -115,6 +118,7 @@ namespace Timescales.Controllers
                 timescale.UpdatedDate = DateTime.Now;
                 _context.Add(timescale);
                 await _context.SaveChangesAsync();
+                await _auditHandler.AddAuditLog("Create", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
                 return RedirectToAction(nameof(Index));
             }
             return View(timescale);
@@ -172,6 +176,7 @@ namespace Timescales.Controllers
                         throw;
                     }
                 }
+                await _auditHandler.AddAuditLog("Edit", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
                 return RedirectToAction(nameof(Index));
             }
             return View(timescale);
@@ -210,6 +215,7 @@ namespace Timescales.Controllers
 
             _context.Timescales.Remove(timescale);
             await _context.SaveChangesAsync();
+            await _auditHandler.AddAuditLog("Create", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
             return RedirectToAction(nameof(Index));
         }
 

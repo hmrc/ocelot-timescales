@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Timescales.Controllers.Helpers;
 using Timescales.Models;
 
 namespace Timescales
@@ -37,6 +38,7 @@ namespace Timescales
 
             services.AddAuthentication(HttpSysDefaults.AuthenticationScheme);   
             services.AddMvc();
+            services.AddScoped<IAuditHandler, AuditHandler>();
             services.Configure<IISOptions>(c =>
             {
                 c.ForwardClientCertificate = true;

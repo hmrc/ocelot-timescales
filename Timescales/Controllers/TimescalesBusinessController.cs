@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Timescales.Controllers.Helpers;
 using Timescales.Models;
 
 namespace Timescales.Controllers
@@ -12,11 +13,13 @@ namespace Timescales.Controllers
     {
         private readonly Context _context;
         private readonly ILogger<TimescalesBusinessController> _logger;
+        private readonly IAuditHandler _auditHandler;
 
-        public TimescalesBusinessController(Context context, ILogger<TimescalesBusinessController> logger)
+        public TimescalesBusinessController(Context context, ILogger<TimescalesBusinessController> logger, IAuditHandler auditHandler)
         {
             _context = context;
             _logger = logger;
+            _auditHandler = auditHandler;
         }
 
         // GET: TimescalesBusiness       
@@ -141,6 +144,7 @@ namespace Timescales.Controllers
                         throw;
                     }
                 }
+                await _auditHandler.AddAuditLog("Edit", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
                 return RedirectToAction(nameof(Index));
             }
             return View(timescale);
