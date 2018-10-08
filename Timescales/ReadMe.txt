@@ -13,3 +13,6 @@ Variable Value: [LOCATION]\[FILENAME].js
 Variable Name: CSS
 Variable Value: [LOCATION]\[FILENAME].css
 --------------------------------------------------------------------------------------
+Variable Name: CmsIndex
+Variable Value: [LOCATION]\[FILENAME].htm
+--------------------------------------------------------------------------------------

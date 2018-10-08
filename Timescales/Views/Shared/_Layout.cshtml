@@ -22,7 +22,7 @@
     
     <nav class="navbar bg-primary fixed-top">
         <form class="form-inline">
-            <a class="navbar-brand" href="../index.htm"><i class="fa fa-paw" aria-hidden="true"></i> &nbsp;ocelot.<span class="text-muted">@ViewData["Header"]</span><span style="display:none;" id="dev">.Development</span></a>
+            <a class="navbar-brand" href="@Environment.GetEnvironmentVariable("CmsIndex", EnvironmentVariableTarget.Machine))"><i class="fa fa-paw" aria-hidden="true"></i> &nbsp;ocelot.<span class="text-muted">@ViewData["Header"]</span><span style="display:none;" id="dev">.Development</span></a>
 
             <div class="btn-toolbar mr-2" role="toolbar">
                 <div class="btn-group" role="group">
