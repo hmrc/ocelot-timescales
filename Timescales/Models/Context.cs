@@ -17,6 +17,11 @@ namespace Timescales.Models
             modelBuilder.Entity<Timescale>()
                 .HasIndex(t => t.Placeholder)
                 .IsUnique();
+
+            modelBuilder.Entity<Timescale>()
+                .HasMany(e => e.Audit)
+                .WithOne(e => e.Timescale)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

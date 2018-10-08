@@ -214,8 +214,7 @@ namespace Timescales.Controllers
             }
 
             _context.Timescales.Remove(timescale);
-            await _context.SaveChangesAsync();
-            await _auditHandler.AddAuditLog("Create", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
+            await _context.SaveChangesAsync();         
             return RedirectToAction(nameof(Index));
         }
 

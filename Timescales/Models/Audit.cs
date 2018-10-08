@@ -35,5 +35,7 @@ namespace Timescales.Models
         [DisplayName("Days")]
         [Required(ErrorMessage = "Days Required")]
         public int Days { get; set; }
+
+        public virtual Timescale Timescale { get; set; }
     }
 }
