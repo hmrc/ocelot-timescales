@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" 
               asp-fallback-href="~/lib/bootstrap/css/bootstrap.css" 
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="@Environment.GetEnvironmentVariable("CSS", EnvironmentVariableTarget.Machine))" asp-append-version="true" /> 
+        <link rel="stylesheet" href="@Environment.GetEnvironmentVariable("CSS", EnvironmentVariableTarget.Machine)" asp-append-version="true" /> 
         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" asp-append-version="true" /> 
     </environment>
 </head>
@@ -23,7 +23,7 @@
     
     <nav class="navbar bg-primary fixed-top">
         <form class="form-inline">
-            <a class="navbar-brand" href="@Environment.GetEnvironmentVariable("CmsIndex", EnvironmentVariableTarget.Machine))"><i class="fa fa-paw" aria-hidden="true"></i> &nbsp;ocelot.<span class="text-muted">@ViewData["Header"]</span><span style="display:none;" id="dev">.Development</span></a>
+            <a class="navbar-brand" href="@Environment.GetEnvironmentVariable("CmsIndex", EnvironmentVariableTarget.Machine)"><i class="fa fa-paw" aria-hidden="true"></i> &nbsp;ocelot.<span class="text-muted">@ViewData["Header"]</span><span style="display:none;" id="dev">.Development</span></a>
 
             <div class="btn-toolbar mr-2" role="toolbar">
                 <div class="btn-group" role="group">
@@ -60,7 +60,7 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
-        <script src="@Environment.GetEnvironmentVariable("NavBarBugs", EnvironmentVariableTarget.Machine))" asp-append-version="true"></script>
+        <script src="@Environment.GetEnvironmentVariable("NavBarBugs", EnvironmentVariableTarget.Machine)" asp-append-version="true"></script>
     </environment>
 
     @RenderSection("Scripts", required: false)
