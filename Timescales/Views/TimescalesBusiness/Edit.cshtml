@@ -9,6 +9,34 @@
 <h2>Edit</h2>
 
 <div class="row">
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Placeholder)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Placeholder)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Name)
+                </td>
+            </tr>         
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Description)
+                </td>
+            </tr>     
+        </tbody>
+    </table>
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
