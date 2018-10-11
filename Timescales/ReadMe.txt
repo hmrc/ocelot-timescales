@@ -25,3 +25,29 @@ Environment: Live/Dev
 Variable Name: TimescalesFile
 Variable Value: [LOCATION]\[FILENAME].json
 --------------------------------------------------------------------------------------
+Environment: Live
+Variable Name: AppleTouchIcon 
+Variable Value: [LOCATION]\[FILENAME].png
+--------------------------------------------------------------------------------------
+Environment: Live
+Variable Name: Favicon32x32 
+Variable Value: [LOCATION]\[FILENAME].png
+--------------------------------------------------------------------------------------
+Environment: Live
+Variable Name: Favicon16x16 
+Variable Value: [LOCATION]\[FILENAME].png
+--------------------------------------------------------------------------------------
+Environment: Live
+Variable Name: SafariPinnedTab 
+Variable Value: [LOCATION]\[FILENAME].svg
+--------------------------------------------------------------------------------------
+Environment: Live
+Variable Name: Favicon 
+Variable Value: [LOCATION]\[FILENAME].ico
+--------------------------------------------------------------------------------------
+
+
+
+
+
+

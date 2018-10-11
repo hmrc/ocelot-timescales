@@ -11,9 +11,14 @@
         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css"/>
-        <link rel="stylesheet" href="@Environment.GetEnvironmentVariable("CSS", EnvironmentVariableTarget.Machine)"/> 
-        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css"/> 
+        <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" href="@Environment.GetEnvironmentVariable("CSS", EnvironmentVariableTarget.Machine)" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="@Environment.GetEnvironmentVariable("AppleTouchIcon", EnvironmentVariableTarget.Machine)">
+        <link rel="icon" type="image/png" sizes="32x32" href="@Environment.GetEnvironmentVariable("Favicon32x32", EnvironmentVariableTarget.Machine)">
+        <link rel="icon" type="image/png" sizes="16x16" href="@Environment.GetEnvironmentVariable("Favicon16x16", EnvironmentVariableTarget.Machine)">      
+        <link rel="mask-icon"  color="#01928c" href="@Environment.GetEnvironmentVariable("SafariPinnedTab", EnvironmentVariableTarget.Machine)">
+        <link rel="shortcut icon" href="@Environment.GetEnvironmentVariable("Favicon", EnvironmentVariableTarget.Machine)">
     </environment>
 </head>
 

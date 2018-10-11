@@ -39,8 +39,10 @@ namespace Timescales
 
             services.AddAuthentication(HttpSysDefaults.AuthenticationScheme);   
             services.AddMvc();
+
             services.AddScoped<IAuditHandler, AuditHandler>();
             services.AddScoped<IPublishHandler, PublishHandler>();
+
             services.Configure<IISOptions>(c =>
             {
                 c.ForwardClientCertificate = true;
@@ -60,6 +62,7 @@ namespace Timescales
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
             app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();

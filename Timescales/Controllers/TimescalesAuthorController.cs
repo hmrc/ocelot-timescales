@@ -30,7 +30,7 @@ namespace Timescales.Controllers
 
         // GET: TimescalesAuthor  
         public IActionResult Index(string sortOrder, string searchString)
-        {           
+        {
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.PlaceholderSortParm = sortOrder == "Placeholder" ? "placeholder_desc" : "Placeholder";           
             ViewBag.DescriptionSortParm = sortOrder == "Description" ? "description_desc" : "Description";       
