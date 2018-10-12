@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Timescales.Controllers.Helpers.Interfaces;
@@ -13,12 +11,15 @@ namespace Timescales.Controllers.Helpers
     public class LegacyPublishHandler : ILegacyPublishHandler
     {
         private readonly Context _context;
-        private readonly ILogger<PublishHandler> _logger;
+        private readonly ILogger<LegacyPublishHandler> _logger;
+        private readonly IFileHandler _fileHandler;
 
-        public LegacyPublishHandler(Context context, ILogger<PublishHandler> logger)
+        public LegacyPublishHandler(Context context, ILogger<LegacyPublishHandler> logger, 
+                                        IFileHandler fileHandler)
         {
             _context = context;
             _logger = logger;
+            _fileHandler = fileHandler;
         }
 
         public Task<bool> Publish(string lineOfBusiness)
@@ -39,16 +40,8 @@ namespace Timescales.Controllers.Helpers
                                         )
                                     );
 
-            if (File.Exists(publishFile))
-            {
-                File.Delete(publishFile);
-            }
-
-            using (FileStream fs = File.Create(publishFile))
-            {
-                Byte[] info = new UTF8Encoding(true).GetBytes(export.ToString());
-                fs.Write(info, 0, info.Length);
-            }
+            _fileHandler.CreateFile(publishFile, export.ToString());
+          
             return true;
         }
     }

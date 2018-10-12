@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Timescales.Controllers.Helpers.Interfaces;
 using Timescales.Models;
@@ -14,11 +12,14 @@ namespace Timescales.Controllers.Helpers
     {
         private readonly Context _context;
         private readonly ILogger<PublishHandler> _logger;
+        private readonly IFileHandler _fileHandler;
 
-        public PublishHandler(Context context, ILogger<PublishHandler> logger)
+        public PublishHandler(Context context, ILogger<PublishHandler> logger,
+                                IFileHandler fileHandler)
         {
             _context = context;
             _logger = logger;
+            _fileHandler = fileHandler;
         }
 
         public Task<bool> Publish()
@@ -32,16 +33,8 @@ namespace Timescales.Controllers.Helpers
             var timescales = _context.Timescales.ToList();
             var timescalesJson = JsonConvert.SerializeObject(timescales);
 
-            if (File.Exists(publishFile))
-            {
-                File.Delete(publishFile);
-            }
+            _fileHandler.CreateFile(publishFile, timescalesJson);
 
-            using (FileStream fs = File.Create(publishFile))
-            {
-                Byte[] info = new UTF8Encoding(true).GetBytes(timescalesJson);              
-                fs.Write(info, 0, info.Length);
-            }
             return true;
         }
     }
