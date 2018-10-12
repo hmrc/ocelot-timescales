@@ -36,8 +36,8 @@ namespace Timescales.Controllers
             ViewBag.DescriptionSortParm = sortOrder == "Description" ? "description_desc" : "Description";
             ViewBag.LineOfBusinessParm = sortOrder == "LineOfBusiness" ? "lineOfBusiness_desc" : "LineOfBusiness";
 
-            var timescales = from t in _context.Timescales
-                             select t;
+            var timescales = _context.Timescales
+                                     .Where(t => t.Owners.Contains(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)));                            
 
             if (!String.IsNullOrEmpty(searchString))
             {
