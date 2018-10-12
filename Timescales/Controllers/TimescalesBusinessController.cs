@@ -88,7 +88,8 @@ namespace Timescales.Controllers
             }
 
             var timescale = await _context.Timescales
-                .FirstOrDefaultAsync(m => m.Id == id);
+                                          .FirstOrDefaultAsync(m => m.Id == id);
+
             if (timescale == null)
             {
                 return NotFound();
@@ -106,6 +107,7 @@ namespace Timescales.Controllers
             }
 
             var timescale = await _context.Timescales.FindAsync(id);
+
             if (timescale == null)
             {
                 return NotFound();
@@ -153,6 +155,7 @@ namespace Timescales.Controllers
                 await _auditHandler.AddAuditLog("Edit", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
                 await _publishHandler.Publish();
                 await _legacyPublishHandler.Publish(timescale.LineOfBusiness);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(timescale);

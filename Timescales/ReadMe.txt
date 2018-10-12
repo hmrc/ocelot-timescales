@@ -45,6 +45,10 @@ Environment: Live
 Variable Name: Favicon 
 Variable Value: [LOCATION]\[FILENAME].ico
 --------------------------------------------------------------------------------------
+Environment: Live/Dev
+Variable Name: LegacyTimescalesLocation 
+Variable Value: [LOCATION]\
+--------------------------------------------------------------------------------------
 
 
 
