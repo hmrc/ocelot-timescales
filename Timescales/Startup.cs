@@ -42,7 +42,7 @@ namespace Timescales
 
             services.AddScoped<IAuditHandler, AuditHandler>();
             services.AddScoped<IPublishHandler, PublishHandler>();
-
+            services.AddScoped<ILegacyPublishHandler, LegacyPublishHandler>();
             services.Configure<IISOptions>(c =>
             {
                 c.ForwardClientCertificate = true;

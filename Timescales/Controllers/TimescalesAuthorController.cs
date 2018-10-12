@@ -18,14 +18,17 @@ namespace Timescales.Controllers
         private readonly ILogger<TimescalesAuthorController> _logger;
         private readonly IAuditHandler _auditHandler;
         private readonly IPublishHandler _publishHandler;
+        private readonly ILegacyPublishHandler _legacyPublishHandler;
 
         public TimescalesAuthorController(Context context, ILogger<TimescalesAuthorController> logger, 
-                                            IAuditHandler auditHandler, IPublishHandler publishHandler)
+                                            IAuditHandler auditHandler, IPublishHandler publishHandler,
+                                            ILegacyPublishHandler legacyPublishHandler)
         {
             _context = context;
             _logger = logger;
             _auditHandler = auditHandler;
             _publishHandler = publishHandler;
+            _legacyPublishHandler = legacyPublishHandler;
         }
 
         // GET: TimescalesAuthor  
@@ -123,6 +126,7 @@ namespace Timescales.Controllers
                 await _context.SaveChangesAsync();
                 await _auditHandler.AddAuditLog("Create", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
                 await _publishHandler.Publish();
+                await _legacyPublishHandler.Publish(timescale.LineOfBusiness);
                 return RedirectToAction(nameof(Index));
             }
             return View(timescale);
@@ -182,6 +186,7 @@ namespace Timescales.Controllers
                 }
                 await _auditHandler.AddAuditLog("Edit", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
                 await _publishHandler.Publish();
+                await _legacyPublishHandler.Publish(timescale.LineOfBusiness);
                 return RedirectToAction(nameof(Index));
             }
             return View(timescale);
@@ -221,6 +226,7 @@ namespace Timescales.Controllers
             _context.Timescales.Remove(timescale);
             await _context.SaveChangesAsync();
             await _publishHandler.Publish();
+            await _legacyPublishHandler.Publish(timescale.LineOfBusiness);
             return RedirectToAction(nameof(Index));
         }
 

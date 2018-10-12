@@ -15,14 +15,17 @@ namespace Timescales.Controllers
         private readonly ILogger<TimescalesBusinessController> _logger;
         private readonly IAuditHandler _auditHandler;
         private readonly IPublishHandler _publishHandler;
+        private readonly ILegacyPublishHandler _legacyPublishHandler;
 
         public TimescalesBusinessController(Context context, ILogger<TimescalesBusinessController> logger, 
-                                              IAuditHandler auditHandler, IPublishHandler publishHandler)
+                                              IAuditHandler auditHandler, IPublishHandler publishHandler,
+                                              ILegacyPublishHandler legacyPublishHandler)
         {
             _context = context;
             _logger = logger;
             _auditHandler = auditHandler;
             _publishHandler = publishHandler;
+            _legacyPublishHandler = legacyPublishHandler;
         }
 
         // GET: TimescalesBusiness       
@@ -149,6 +152,7 @@ namespace Timescales.Controllers
                 }
                 await _auditHandler.AddAuditLog("Edit", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
                 await _publishHandler.Publish();
+                await _legacyPublishHandler.Publish(timescale.LineOfBusiness);
                 return RedirectToAction(nameof(Index));
             }
             return View(timescale);
