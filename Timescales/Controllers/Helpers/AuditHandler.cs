@@ -30,6 +30,7 @@ namespace Timescales.Controllers.Helpers
             };
 
             _context.Add(audit);
+
             await _context.SaveChangesAsync();
         }
     }

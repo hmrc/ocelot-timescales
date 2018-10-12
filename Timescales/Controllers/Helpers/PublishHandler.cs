@@ -14,7 +14,8 @@ namespace Timescales.Controllers.Helpers
         private readonly ILogger<PublishHandler> _logger;
         private readonly IFileHandler _fileHandler;
 
-        public PublishHandler(Context context, ILogger<PublishHandler> logger,
+        public PublishHandler(Context context, 
+                                ILogger<PublishHandler> logger,
                                 IFileHandler fileHandler)
         {
             _context = context;

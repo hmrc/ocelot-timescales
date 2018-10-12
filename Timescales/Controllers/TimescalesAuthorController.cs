@@ -2,11 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using System.Xml;
 using Timescales.Controllers.Helpers.Interfaces;
 using Timescales.Models;
 
@@ -19,16 +16,21 @@ namespace Timescales.Controllers
         private readonly IAuditHandler _auditHandler;
         private readonly IPublishHandler _publishHandler;
         private readonly ILegacyPublishHandler _legacyPublishHandler;
+        private readonly IAuthHandler _authHandler;
 
-        public TimescalesAuthorController(Context context, ILogger<TimescalesAuthorController> logger, 
-                                            IAuditHandler auditHandler, IPublishHandler publishHandler,
-                                            ILegacyPublishHandler legacyPublishHandler)
+        public TimescalesAuthorController(Context context, 
+                                            ILogger<TimescalesAuthorController> logger, 
+                                            IAuditHandler auditHandler, 
+                                            IPublishHandler publishHandler,
+                                            ILegacyPublishHandler legacyPublishHandler,
+                                            IAuthHandler authHandler)
         {
             _context = context;
             _logger = logger;
             _auditHandler = auditHandler;
             _publishHandler = publishHandler;
             _legacyPublishHandler = legacyPublishHandler;
+            _authHandler = authHandler;
         }
 
         // GET: TimescalesAuthor  
@@ -78,6 +80,7 @@ namespace Timescales.Controllers
                     timescales = timescales.OrderBy(t => t.Name);
                     break;
             }
+
             return View(timescales.ToList());
         }
 
@@ -113,9 +116,10 @@ namespace Timescales.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Placeholder,Name,Description,Owners,OldestWorkDate,Days,Basis,LineOfBusiness")] Timescale timescale)
         {
-            if (!IsAuthedRole(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)))
+            if (!await _authHandler.IsAuthedRole(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)))
             {
                 ViewBag.UserMessage = "You are not authorised to create a timescale.";
+
                 return View(timescale);
             }
 
@@ -123,11 +127,14 @@ namespace Timescales.Controllers
             {
                 timescale.Id = Guid.NewGuid();
                 timescale.UpdatedDate = DateTime.Now;
+
                 _context.Add(timescale);
+
                 await _context.SaveChangesAsync();
                 await _auditHandler.AddAuditLog("Create", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
                 await _publishHandler.Publish();
                 await _legacyPublishHandler.Publish(timescale.LineOfBusiness);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(timescale);
@@ -147,6 +154,7 @@ namespace Timescales.Controllers
             {
                 return NotFound();
             }
+
             return View(timescale);
         }
 
@@ -161,7 +169,7 @@ namespace Timescales.Controllers
             {
                 return NotFound();
             }
-            else if (!IsAuthedRole(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)))
+            else if (!await _authHandler.IsAuthedRole(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)))
             {
                 ViewBag.UserMessage = "You are not authorised to edit this timescale.";
                 return View(timescale);
@@ -172,7 +180,9 @@ namespace Timescales.Controllers
                 try
                 {
                     timescale.UpdatedDate = DateTime.Now;
+
                     _context.Update(timescale);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -186,6 +196,7 @@ namespace Timescales.Controllers
                         throw;
                     }
                 }
+
                 await _auditHandler.AddAuditLog("Edit", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
                 await _publishHandler.Publish();
                 await _legacyPublishHandler.Publish(timescale.LineOfBusiness);
@@ -221,13 +232,14 @@ namespace Timescales.Controllers
         {
             var timescale = await _context.Timescales.FindAsync(id);
 
-            if (!IsAuthedRole(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)))
+            if (!await _authHandler.IsAuthedRole(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)))
             {
                 ViewBag.UserMessage = "You are not authorised to delete this timescale.";
                 return View(timescale);
             }
 
             _context.Timescales.Remove(timescale);
+
             await _context.SaveChangesAsync();
             await _publishHandler.Publish();
             await _legacyPublishHandler.Publish(timescale.LineOfBusiness);
@@ -258,42 +270,6 @@ namespace Timescales.Controllers
         private bool TimescaleExists(Guid id)
         {
             return _context.Timescales.Any(e => e.Id == id);
-        }
-
-        private bool IsAuthedRole(string pid)
-        {
-            var file = Environment.GetEnvironmentVariable("StaffList", EnvironmentVariableTarget.Machine);
-            XmlDocument xml = new XmlDocument();        
-            string textFromPage;
-
-            WebClient web = new WebClient
-            {
-                Credentials = CredentialCache.DefaultCredentials
-            };
-
-            Stream stream = web.OpenRead(file);
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                textFromPage = reader.ReadToEnd();
-            }
-            xml.LoadXml(textFromPage);          
-
-            var nodelocation = $"dataroot/Entry[PID='{@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)}']";
-            var entry = xml.SelectSingleNode(nodelocation);
-
-            if(entry == null)
-            {
-                return false;
-            }
-
-            var role = entry.SelectSingleNode("Role").InnerText;
-
-            if (role == "Admin" || role == "IPDM")
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }

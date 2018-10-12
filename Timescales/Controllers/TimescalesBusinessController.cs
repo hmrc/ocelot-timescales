@@ -17,9 +17,11 @@ namespace Timescales.Controllers
         private readonly IPublishHandler _publishHandler;
         private readonly ILegacyPublishHandler _legacyPublishHandler;
 
-        public TimescalesBusinessController(Context context, ILogger<TimescalesBusinessController> logger, 
-                                              IAuditHandler auditHandler, IPublishHandler publishHandler,
-                                              ILegacyPublishHandler legacyPublishHandler)
+        public TimescalesBusinessController(Context context, 
+                                                ILogger<TimescalesBusinessController> logger, 
+                                                IAuditHandler auditHandler, 
+                                                IPublishHandler publishHandler,
+                                                ILegacyPublishHandler legacyPublishHandler)
         {
             _context = context;
             _logger = logger;
@@ -75,6 +77,7 @@ namespace Timescales.Controllers
                     timescales = timescales.OrderBy(t => t.Name);
                     break;
             }
+
             return View(timescales.ToList());
         }
 
@@ -130,6 +133,7 @@ namespace Timescales.Controllers
             else if (!timescale.Owners.Contains(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)))
             {
                 ViewBag.UserMessage = "You are not authorised to edit this timescale.";
+
                 return View(timescale);
             }
 
@@ -138,7 +142,9 @@ namespace Timescales.Controllers
                 try
                 {
                     timescale.UpdatedDate = DateTime.Now;
+
                     _context.Update(timescale);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -152,6 +158,7 @@ namespace Timescales.Controllers
                         throw;
                     }
                 }
+
                 await _auditHandler.AddAuditLog("Edit", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
                 await _publishHandler.Publish();
                 await _legacyPublishHandler.Publish(timescale.LineOfBusiness);
