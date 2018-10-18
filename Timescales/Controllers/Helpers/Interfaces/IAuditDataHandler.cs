@@ -3,8 +3,8 @@ using Timescales.Models;
 
 namespace Timescales.Controllers.Helpers.Interfaces
 {
-    public interface IAuditHandler
+    public interface IAuditDataHandler
     {
-        Task AddAuditLog(string action, Timescale timescale, string user);
+        Task<bool> Post(string action, Timescale timescale, string user);
     }
 }

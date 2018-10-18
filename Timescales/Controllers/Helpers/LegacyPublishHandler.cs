@@ -31,11 +31,14 @@ namespace Timescales.Controllers.Helpers
         private bool PublishAsync(string lineOfBusiness)
         {
             var publishFile = $"{Environment.GetEnvironmentVariable("LegacyTimescalesLocation", EnvironmentVariableTarget.Machine)}{lineOfBusiness}Timescales.xml";
-            var timescales = _context.Timescales.Where(t => t.LineOfBusiness == lineOfBusiness).ToList();
+
+            var timescales = _context.Timescales
+                                     .Where(t => t.LineOfBusiness == lineOfBusiness)
+                                     .ToList();
 
             XElement export = new XElement("domroot",
                                     new XElement("Entry",
-                                        new XElement("WC", "45000") ,
+                                        new XElement("WC", "45000"),
                                         from timescale in timescales
                                         select new XElement(timescale.Placeholder, timescale.Days)
                                         )

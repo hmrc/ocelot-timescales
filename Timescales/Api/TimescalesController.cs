@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Timescales.Controllers.Helpers.Interfaces;
 using Timescales.Models;
 
 namespace Timescales.Api
@@ -11,18 +12,21 @@ namespace Timescales.Api
     [ApiController]
     public class TimescalesController : ControllerBase
     {
-        private readonly Context _context;
+        private readonly ILogger<TimescalesController> _logger;
+        private readonly ITimescaleDataHandler _timescaleDataHandler;
 
-        public TimescalesController(Context context)
+        public TimescalesController(ILogger<TimescalesController> logger,
+                                            ITimescaleDataHandler timescaleDataHandler)
         {
-            _context = context;
+            _logger = logger;
+            _timescaleDataHandler = timescaleDataHandler;
         }
         
         // GET: api/Timescales      
         [HttpGet]   
-        public IEnumerable<Timescale> GetTimescales()
+        public async Task<IEnumerable<Timescale>> GetTimescales()
         {
-            return _context.Timescales;           
+            return await _timescaleDataHandler.GetMany();
         }
 
         // GET: api/Timescales/5
@@ -34,7 +38,7 @@ namespace Timescales.Api
                 return BadRequest(ModelState);
             }
 
-            var timescale = await _context.Timescales.FindAsync(id);
+            var timescale = await _timescaleDataHandler.Get(id);
 
             if (timescale == null)
             {

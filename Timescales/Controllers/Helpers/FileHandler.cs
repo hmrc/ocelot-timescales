@@ -33,6 +33,7 @@ namespace Timescales.Controllers.Helpers
                 Byte[] info = new UTF8Encoding(true).GetBytes(data);
                 fs.Write(info, 0, info.Length);
             }
+
             return true;
         }
     }

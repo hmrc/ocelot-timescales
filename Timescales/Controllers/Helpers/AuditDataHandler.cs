@@ -6,18 +6,23 @@ using Timescales.Models;
 
 namespace Timescales.Controllers.Helpers
 {
-    public class AuditHandler : IAuditHandler
+    public class AuditDataHandler : IAuditDataHandler
     {
         private readonly Context _context;
-        private readonly ILogger<AuditHandler> _logger;
+        private readonly ILogger<AuditDataHandler> _logger;
 
-        public AuditHandler(Context context, ILogger<AuditHandler> logger)
+        public AuditDataHandler(Context context, ILogger<AuditDataHandler> logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        public async Task AddAuditLog(string action, Timescale timescale, string user)
+        public Task<bool> Post(string action, Timescale timescale, string user)
+        {
+            return Task.Run(() => PostAsync(action, timescale, user));            
+        }
+
+        private bool PostAsync(string action, Timescale timescale, string user)
         {
             var audit = new Audit()
             {
@@ -30,8 +35,9 @@ namespace Timescales.Controllers.Helpers
             };
 
             _context.Add(audit);
+            _context.SaveChanges();
 
-            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

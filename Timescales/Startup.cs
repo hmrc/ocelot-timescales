@@ -40,11 +40,12 @@ namespace Timescales
             services.AddAuthentication(HttpSysDefaults.AuthenticationScheme);   
             services.AddMvc();
 
-            services.AddScoped<IAuditHandler, AuditHandler>();
+            services.AddScoped<IAuditDataHandler, AuditDataHandler>();
             services.AddScoped<IPublishHandler, PublishHandler>();
             services.AddScoped<ILegacyPublishHandler, LegacyPublishHandler>();
             services.AddScoped<IFileHandler, FileHandler>();
             services.AddScoped<IAuthHandler, AuthHandler>();
+            services.AddScoped<ITimescaleDataHandler, TimescaleDataHandler>();
 
             services.Configure<IISOptions>(c =>
             {

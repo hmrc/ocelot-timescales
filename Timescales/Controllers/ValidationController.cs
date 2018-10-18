@@ -1,26 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Linq;
-using Timescales.Models;
+using System.Threading.Tasks;
+using Timescales.Controllers.Helpers.Interfaces;
 
 namespace Timescales.Controllers
 {
     public class ValidationController : Controller
-    {
-        private readonly Context _context;
+    {        
         private readonly ILogger<ValidationController> _logger;
+        private readonly ITimescaleDataHandler _timescaleDataHandler;
 
-        public ValidationController(Context context, ILogger<ValidationController> logger)
-        {
-            _context = context;
+        public ValidationController(ILogger<ValidationController> logger,
+                                            ITimescaleDataHandler timescaleDataHandler)
+        {           
             _logger = logger;
+            _timescaleDataHandler = timescaleDataHandler;
         }
 
-        public ActionResult CheckPlaceholderExist(string placeholder)
+        public async Task<ActionResult> CheckPlaceholderExist(string placeholder)
         {
-            var result = _context.Timescales.Where(t => t.Placeholder == placeholder).ToList();
-
-            if (result.Count == 0)
+            var result = await _timescaleDataHandler.GetMany(t => t.Placeholder == placeholder);
+           
+            if (result.Count() == 0)
             {
                 return Content("true");
             }

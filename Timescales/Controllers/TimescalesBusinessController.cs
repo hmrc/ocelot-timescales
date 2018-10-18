@@ -11,35 +11,34 @@ namespace Timescales.Controllers
 {
     public class TimescalesBusinessController : Controller
     {
-        private readonly Context _context;
-        private readonly ILogger<TimescalesBusinessController> _logger;
-        private readonly IAuditHandler _auditHandler;
+        private readonly ILogger<TimescalesBusinessController> _logger;        
         private readonly IPublishHandler _publishHandler;
         private readonly ILegacyPublishHandler _legacyPublishHandler;
+        private readonly IAuditDataHandler _auditDataHandler;
+        private readonly ITimescaleDataHandler _timescaleDataHandler;
 
-        public TimescalesBusinessController(Context context, 
-                                                ILogger<TimescalesBusinessController> logger, 
-                                                IAuditHandler auditHandler, 
+        public TimescalesBusinessController(ILogger<TimescalesBusinessController> logger,                                                 
                                                 IPublishHandler publishHandler,
-                                                ILegacyPublishHandler legacyPublishHandler)
+                                                ILegacyPublishHandler legacyPublishHandler,
+                                                IAuditDataHandler auditDataHandler,
+                                                ITimescaleDataHandler timescaleDataHandler)
         {
-            _context = context;
-            _logger = logger;
-            _auditHandler = auditHandler;
+            _logger = logger;            
             _publishHandler = publishHandler;
             _legacyPublishHandler = legacyPublishHandler;
+            _auditDataHandler = auditDataHandler;
+            _timescaleDataHandler = timescaleDataHandler;
         }
 
         // GET: TimescalesBusiness       
-        public IActionResult Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.PlaceholderSortParm = sortOrder == "Placeholder" ? "placeholder_desc" : "Placeholder";
             ViewBag.DescriptionSortParm = sortOrder == "Description" ? "description_desc" : "Description";
             ViewBag.LineOfBusinessParm = sortOrder == "LineOfBusiness" ? "lineOfBusiness_desc" : "LineOfBusiness";
 
-            var timescales = _context.Timescales
-                                     .Where(t => t.Owners.Contains(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)));                            
+            var timescales = await _timescaleDataHandler.GetMany(t => t.Owners.Contains(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)));                                                           
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -80,8 +79,7 @@ namespace Timescales.Controllers
 
             return View(timescales.ToList());
         }
-
-
+        
         // GET: TimescalesBusiness/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -90,8 +88,7 @@ namespace Timescales.Controllers
                 return NotFound();
             }
 
-            var timescale = await _context.Timescales
-                                          .FirstOrDefaultAsync(m => m.Id == id);
+            var timescale = await _timescaleDataHandler.Get(id);
 
             if (timescale == null)
             {
@@ -109,7 +106,7 @@ namespace Timescales.Controllers
                 return NotFound();
             }
 
-            var timescale = await _context.Timescales.FindAsync(id);
+            var timescale = await _timescaleDataHandler.Get(id);
 
             if (timescale == null)
             {
@@ -143,13 +140,11 @@ namespace Timescales.Controllers
                 {
                     timescale.UpdatedDate = DateTime.Now;
 
-                    _context.Update(timescale);
-
-                    await _context.SaveChangesAsync();
+                    await _timescaleDataHandler.Put(timescale);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TimescaleExists(timescale.Id))
+                    if (!await _timescaleDataHandler.Exists(timescale.Id))
                     {
                         return NotFound();
                     }
@@ -159,18 +154,13 @@ namespace Timescales.Controllers
                     }
                 }
 
-                await _auditHandler.AddAuditLog("Edit", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
+                await _auditDataHandler.Post("Edit", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
                 await _publishHandler.Publish();
                 await _legacyPublishHandler.Publish(timescale.LineOfBusiness);
 
                 return RedirectToAction(nameof(Index));
             }
             return View(timescale);
-        }  
-
-        private bool TimescaleExists(Guid id)
-        {
-            return _context.Timescales.Any(e => e.Id == id);
-        }
+        } 
     }
 }
