@@ -21,6 +21,7 @@ namespace Timescales.Controllers.Helpers
             _context = context;
             _logger = logger;
         }
+
         public Task<Timescale> Get(Guid? id)
         {
             return Task.Run(() => GetAsync(id));           
@@ -65,7 +66,7 @@ namespace Timescales.Controllers.Helpers
         {
             if (id == null)
             {
-                return new Timescale();
+                return null;
             }
 
             return _context.Timescales
@@ -77,7 +78,7 @@ namespace Timescales.Controllers.Helpers
         {
             if (id == null)
             {
-                return new Timescale();
+                return null;
             }
 
             return _context.Timescales
