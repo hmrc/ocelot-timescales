@@ -56,7 +56,7 @@ namespace Timescales.Controllers
                 searchString = currentFilter;
             }
 
-            ViewBag.CurrentFilter = searchString;            
+            ViewData["CurrentFilter"] = searchString;            
 
             if (sortOrder != null)
             {
@@ -87,8 +87,8 @@ namespace Timescales.Controllers
                     orderby = t => t.Placeholder;
                     break;
                 case "placeholder_desc":
-                    orderby = t => t.Placeholder;               
-                    break;                
+                    orderby = t => t.Placeholder;
+                    break;
                 case "Description":
                     orderby = t => t.Description;                   
                     break;
@@ -106,7 +106,7 @@ namespace Timescales.Controllers
                     break;
             }
 
-            int pageSize = 2;
+            int pageSize = 20;
             var timescales = await _timescaleDataHandler.GetMany(where, orderby, ascending);
 
             return View(await PaginatedList<Timescale>.CreateAsync(timescales.AsNoTracking(), page ?? 1, pageSize));          
