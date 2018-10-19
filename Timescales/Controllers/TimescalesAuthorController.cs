@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Timescales.Controllers.Helpers.Interfaces;
 using Timescales.Models;
@@ -39,48 +40,61 @@ namespace Timescales.Controllers
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.PlaceholderSortParm = sortOrder == "Placeholder" ? "placeholder_desc" : "Placeholder";           
             ViewBag.DescriptionSortParm = sortOrder == "Description" ? "description_desc" : "Description";       
-            ViewBag.LineOfBusinessParm = sortOrder == "LineOfBusiness" ? "lineOfBusiness_desc" : "LineOfBusiness";           
+            ViewBag.LineOfBusinessParm = sortOrder == "LineOfBusiness" ? "lineOfBusiness_desc" : "LineOfBusiness";
 
-            var timescales = await _timescaleDataHandler.GetMany();
+            Expression<Func<Timescale, bool>> where;
+            Expression<Func<Timescale, string>> orderby;
+            var ascending = true;
+
+            if (sortOrder != null)
+            {
+                if (sortOrder.Contains("_desc"))
+                {
+                    ascending = false;
+                }
+            }
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                timescales = timescales.Where(s => s.Name.ToUpper().Contains(searchString.ToUpper()) ||
-                                                   s.Description.ToUpper().Contains(searchString.ToUpper()) ||
-                                                   s.Placeholder.ToUpper().Contains(searchString.ToUpper()) ||
-                                                   s.LineOfBusiness.ToUpper().Contains(searchString.ToUpper())
-                                                   );
+                where = s => s.Name.ToUpper().Contains(searchString.ToUpper()) ||
+                        s.Description.ToUpper().Contains(searchString.ToUpper()) ||
+                        s.Placeholder.ToUpper().Contains(searchString.ToUpper()) ||
+                        s.LineOfBusiness.ToUpper().Contains(searchString.ToUpper());
+            }
+            else
+            {
+                 where = s => s.Id != null;
             }
 
             switch (sortOrder)
             {
                 case "name_desc":
-                    timescales = timescales.OrderByDescending(t => t.Name);
+                    orderby = t => t.Name;                                 
                     break;
                 case "Placeholder":
-                    timescales = timescales.OrderBy(t => t.Placeholder);
+                    orderby = t => t.Placeholder;
                     break;
                 case "placeholder_desc":
-                    timescales = timescales.OrderByDescending(t => t.Placeholder);
+                    orderby = t => t.Placeholder;               
                     break;                
                 case "Description":
-                    timescales = timescales.OrderBy(t => t.Description);
+                    orderby = t => t.Description;                   
                     break;
                 case "description_desc":
-                    timescales = timescales.OrderByDescending(t => t.Description);
+                    orderby = t => t.Description;                  
                     break; 
                 case "LineOfBusiness":
-                    timescales = timescales.OrderBy(t => t.LineOfBusiness);
+                    orderby = t => t.LineOfBusiness;             
                     break;
                 case "lineOfBusiness_desc":
-                    timescales = timescales.OrderByDescending(t => t.LineOfBusiness);
+                    orderby = t => t.LineOfBusiness;  
                     break;               
                 default:
-                    timescales = timescales.OrderBy(t => t.Name);
+                    orderby = t => t.Name;                  
                     break;
             }
 
-            return View(timescales);
+            return View(await _timescaleDataHandler.GetMany(where, orderby, ascending));
         }
 
         // GET: TimescalesAuthor/Details/5
@@ -133,6 +147,7 @@ namespace Timescales.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+
             return View(timescale);
         }
 
@@ -198,6 +213,7 @@ namespace Timescales.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+
             return View(timescale);
         }
 

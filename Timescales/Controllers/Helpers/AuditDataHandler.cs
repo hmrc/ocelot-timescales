@@ -11,7 +11,8 @@ namespace Timescales.Controllers.Helpers
         private readonly Context _context;
         private readonly ILogger<AuditDataHandler> _logger;
 
-        public AuditDataHandler(Context context, ILogger<AuditDataHandler> logger)
+        public AuditDataHandler(Context context, 
+                                    ILogger<AuditDataHandler> logger)
         {
             _context = context;
             _logger = logger;

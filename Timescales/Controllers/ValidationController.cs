@@ -18,7 +18,7 @@ namespace Timescales.Controllers
             _timescaleDataHandler = timescaleDataHandler;
         }
 
-        public async Task<ActionResult> CheckPlaceholderExist(string placeholder)
+        public async Task<IActionResult> CheckPlaceholderExist(string placeholder)
         {
             var result = await _timescaleDataHandler.GetMany(t => t.Placeholder == placeholder);
            

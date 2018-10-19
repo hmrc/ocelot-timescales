@@ -16,7 +16,7 @@ namespace Timescales.Controllers.Helpers
         private readonly ILogger<TimescaleDataHandler> _logger;
 
         public TimescaleDataHandler(Context context,
-                                                ILogger<TimescaleDataHandler> logger)
+                                        ILogger<TimescaleDataHandler> logger)
         {
             _context = context;
             _logger = logger;
@@ -40,6 +40,11 @@ namespace Timescales.Controllers.Helpers
         public Task<IEnumerable<Timescale>> GetMany(Expression<Func<Timescale, bool>> where)
         {
             return Task.Run(() => GetManyAsync(where));            
+        }
+
+        public Task<IEnumerable<Timescale>> GetMany(Expression<Func<Timescale, bool>> where, Expression<Func<Timescale, string>> orderBy, bool ascending)
+        {
+            return Task.Run(() => GetManyAsync(where, orderBy, ascending));
         }
 
         public Task<bool> Post(Timescale timescale)
@@ -98,6 +103,24 @@ namespace Timescales.Controllers.Helpers
             return _context.Timescales
                            .Where(where)
                            .ToList();
+        }
+
+        private IEnumerable<Timescale> GetManyAsync(Expression<Func<Timescale, bool>> where, Expression<Func<Timescale, string>> orderBy, bool ascending)
+        {
+            if (ascending)
+            {
+                return _context.Timescales
+                           .Where(where)
+                           .OrderBy(orderBy)
+                           .ToList();
+            }
+            else
+            {
+                return _context.Timescales
+                           .Where(where)
+                           .OrderByDescending(orderBy)
+                           .ToList();
+            }            
         }
 
         private bool PostAsync(Timescale timescale)

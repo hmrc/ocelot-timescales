@@ -16,6 +16,8 @@ namespace Timescales.Controllers.Helpers.Interfaces
 
         Task<IEnumerable<Timescale>> GetMany(Expression<Func<Timescale, bool>> where);
 
+        Task<IEnumerable<Timescale>> GetMany(Expression<Func<Timescale, bool>> where, Expression<Func<Timescale, string>> orderBy, bool ascending);       
+
         Task<bool> Post(Timescale timescale);
 
         Task<bool> Put(Timescale timescale);
