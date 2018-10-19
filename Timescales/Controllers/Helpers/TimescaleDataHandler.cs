@@ -42,7 +42,7 @@ namespace Timescales.Controllers.Helpers
             return Task.Run(() => GetManyAsync(where));            
         }
 
-        public Task<IEnumerable<Timescale>> GetMany(Expression<Func<Timescale, bool>> where, Expression<Func<Timescale, string>> orderBy, bool ascending)
+        public Task<IQueryable<Timescale>> GetMany(Expression<Func<Timescale, bool>> where, Expression<Func<Timescale, string>> orderBy, bool ascending)
         {
             return Task.Run(() => GetManyAsync(where, orderBy, ascending));
         }
@@ -105,21 +105,19 @@ namespace Timescales.Controllers.Helpers
                            .ToList();
         }
 
-        private IEnumerable<Timescale> GetManyAsync(Expression<Func<Timescale, bool>> where, Expression<Func<Timescale, string>> orderBy, bool ascending)
+        private IQueryable<Timescale> GetManyAsync(Expression<Func<Timescale, bool>> where, Expression<Func<Timescale, string>> orderBy, bool ascending)
         {
             if (ascending)
             {
                 return _context.Timescales
                            .Where(where)
-                           .OrderBy(orderBy)
-                           .ToList();
+                           .OrderBy(orderBy);
             }
             else
             {
                 return _context.Timescales
                            .Where(where)
-                           .OrderByDescending(orderBy)
-                           .ToList();
+                           .OrderByDescending(orderBy);
             }            
         }
 

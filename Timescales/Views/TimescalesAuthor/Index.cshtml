@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Timescales.Models.Timescale>
+﻿@model Timescales.Controllers.Helpers.PaginatedList<Timescales.Models.Timescale>
 
 @{
     ViewData["Title"] = "Index";
@@ -14,8 +14,9 @@
 {
     <p class="form-group">
         @Html.TextBox("SearchString", null, new { @class = "form-control" })
-        <p class="form-text text-muted">Look for an existing timescale</p>
-        <input type="submit" class="btn btn-primary" value="Search" />
+    <p class="form-text text-muted">Look for an existing timescale</p>
+    <input type="submit" class="btn btn-primary" value="Search" />
+    <a class="btn btn-primary" asp-action="Index">Back to Full List</a>
     </p>
 }
 
@@ -23,17 +24,17 @@
     <thead>
         <tr>
             <th>
-                @Html.ActionLink(@Html.DisplayNameFor(model => model.Placeholder), "Index", new { sortOrder = ViewBag.PlaceholderSortParm })
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["PlaceholderSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Placeholder</a>              
             </th>
             <th>
-                @Html.ActionLink(@Html.DisplayNameFor(model => model.Name), "Index", new { sortOrder = ViewBag.NameSortParm })
-            </th>           
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Name</a>             
+            </th>
             <th>
-                @Html.ActionLink(@Html.DisplayNameFor(model => model.Description), "Index", new { sortOrder = ViewBag.DescriptionSortParm })
-            </th>         
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DescriptionSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Description</a>          
+            </th>
             <th>
-                @Html.ActionLink(@Html.DisplayNameFor(model => model.LineOfBusiness), "Index", new { sortOrder = ViewBag.LineOfBusinessParm })
-            </th>           
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["LineOfBusinessParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Line Of Business</a>        
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -46,18 +47,37 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
-                </td>               
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
-                </td>            
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LineOfBusiness)
                 </td>
                 <td>
-                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
-                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>              
+                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>

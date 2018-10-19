@@ -2,16 +2,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Timescales.Controllers.Helpers;
 using Timescales.Controllers.Helpers.Interfaces;
 using Timescales.Models;
 
 namespace Timescales.Controllers
 {
     public class TimescalesAuthorController : Controller
-    {        
+    {
         private readonly ILogger<TimescalesAuthorController> _logger;        
         private readonly IPublishHandler _publishHandler;
         private readonly ILegacyPublishHandler _legacyPublishHandler;
@@ -35,16 +35,28 @@ namespace Timescales.Controllers
         }
 
         // GET: TimescalesAuthor  
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.PlaceholderSortParm = sortOrder == "Placeholder" ? "placeholder_desc" : "Placeholder";           
-            ViewBag.DescriptionSortParm = sortOrder == "Description" ? "description_desc" : "Description";       
-            ViewBag.LineOfBusinessParm = sortOrder == "LineOfBusiness" ? "lineOfBusiness_desc" : "LineOfBusiness";
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["PlaceholderSortParm"] = sortOrder == "Placeholder" ? "placeholder_desc" : "Placeholder";
+            ViewData["DescriptionSortParm"] = sortOrder == "Description" ? "description_desc" : "Description";
+            ViewData["LineOfBusinessParm"] = sortOrder == "LineOfBusiness" ? "lineOfBusiness_desc" : "LineOfBusiness";
 
             Expression<Func<Timescale, bool>> where;
             Expression<Func<Timescale, string>> orderby;
             var ascending = true;
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;            
 
             if (sortOrder != null)
             {
@@ -94,7 +106,10 @@ namespace Timescales.Controllers
                     break;
             }
 
-            return View(await _timescaleDataHandler.GetMany(where, orderby, ascending));
+            int pageSize = 2;
+            var timescales = await _timescaleDataHandler.GetMany(where, orderby, ascending);
+
+            return View(await PaginatedList<Timescale>.CreateAsync(timescales.AsNoTracking(), page ?? 1, pageSize));          
         }
 
         // GET: TimescalesAuthor/Details/5
