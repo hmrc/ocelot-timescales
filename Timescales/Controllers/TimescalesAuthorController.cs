@@ -69,9 +69,9 @@ namespace Timescales.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 where = s => s.Name.ToUpper().Contains(searchString.ToUpper()) ||
-                        s.Description.ToUpper().Contains(searchString.ToUpper()) ||
-                        s.Placeholder.ToUpper().Contains(searchString.ToUpper()) ||
-                        s.LineOfBusiness.ToUpper().Contains(searchString.ToUpper());
+                             s.Description.ToUpper().Contains(searchString.ToUpper()) ||
+                             s.Placeholder.ToUpper().Contains(searchString.ToUpper()) ||
+                             s.LineOfBusiness.ToUpper().Contains(searchString.ToUpper());
             }
             else
             {
