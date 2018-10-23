@@ -80,27 +80,18 @@ namespace Timescales.Controllers
 
             switch (sortOrder)
             {
-                case "name_desc":
-                    orderby = t => t.Name;                                 
+                case string val when val.ToLower().Contains("name"):
+                    orderby = t => t.Name;
                     break;
-                case "Placeholder":
+                case string val when val.ToLower().Contains("placeholder"):
                     orderby = t => t.Placeholder;
                     break;
-                case "placeholder_desc":
-                    orderby = t => t.Placeholder;
+                case string val when val.ToLower().Contains("description"):
+                    orderby = t => t.Description;
                     break;
-                case "Description":
-                    orderby = t => t.Description;                   
-                    break;
-                case "description_desc":
-                    orderby = t => t.Description;                  
-                    break; 
-                case "LineOfBusiness":
-                    orderby = t => t.LineOfBusiness;             
-                    break;
-                case "lineOfBusiness_desc":
-                    orderby = t => t.LineOfBusiness;  
-                    break;               
+                case string val when val.ToLower().Contains("lineofbusiness"):
+                    orderby = t => t.LineOfBusiness;
+                    break;                     
                 default:
                     orderby = t => t.Name;                  
                     break;
