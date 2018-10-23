@@ -22,50 +22,23 @@ namespace Timescales.Controllers.Helpers
             _logger = logger;
         }
 
-        public Task<Timescale> Get(Guid? id)
-        {
-            return Task.Run(() => GetAsync(id));           
-        }
+        public Task<Timescale> Get(Guid? id) => Task.Run(() => GetAsync(id));
 
-        public Task<Timescale> GetIncludeChildObjects(Guid? id)
-        {
-            return Task.Run(() => GetIncludeChildObjectsAsync(id));
-        }
+        public Task<Timescale> GetIncludeChildObjects(Guid? id) => Task.Run(() => GetIncludeChildObjectsAsync(id));
 
-        public Task<IEnumerable<Timescale>> GetMany()
-        {
-            return Task.Run(() => GetManyAsync());            
-        }
+        public Task<IEnumerable<Timescale>> GetMany() => Task.Run(() => GetManyAsync());
 
-        public Task<IEnumerable<Timescale>> GetMany(Expression<Func<Timescale, bool>> where)
-        {
-            return Task.Run(() => GetManyAsync(where));            
-        }
+        public Task<IEnumerable<Timescale>> GetMany(Expression<Func<Timescale, bool>> where) => Task.Run(() => GetManyAsync(where));
 
-        public Task<IQueryable<Timescale>> GetMany(Expression<Func<Timescale, bool>> where, Expression<Func<Timescale, string>> orderBy, bool ascending)
-        {
-            return Task.Run(() => GetManyAsync(where, orderBy, ascending));
-        }
+        public Task<IQueryable<Timescale>> GetMany(Expression<Func<Timescale, bool>> where, Expression<Func<Timescale, string>> orderBy, bool ascending) => Task.Run(() => GetManyAsync(where, orderBy, ascending));
 
-        public Task<bool> Post(Timescale timescale)
-        {
-            return Task.Run(() => PostAsync(timescale));            
-        }
+        public Task<bool> Post(Timescale timescale) => Task.Run(() => PostAsync(timescale));
 
-        public Task<bool> Put(Timescale timescale)
-        {
-            return Task.Run(() => PutAsync(timescale));
-        }
+        public Task<bool> Put(Timescale timescale) => Task.Run(() => PutAsync(timescale));
 
-        public Task<bool> Delete(Timescale timescale)
-        {
-            return Task.Run(() => DeleteAsync(timescale));
-        }
+        public Task<bool> Delete(Timescale timescale) => Task.Run(() => DeleteAsync(timescale));
 
-        public Task<bool> Exists(Guid id)
-        {
-            return Task.Run(() => ExistsAsync(id));
-        }
+        public Task<bool> Exists(Guid id) => Task.Run(() => ExistsAsync(id));
 
         private Timescale GetAsync(Guid? id)
         {
@@ -95,7 +68,7 @@ namespace Timescales.Controllers.Helpers
         private IEnumerable<Timescale> GetManyAsync()
         {
             return _context.Timescales
-                            .ToList();
+                           .ToList();
         }
 
         private IEnumerable<Timescale> GetManyAsync(Expression<Func<Timescale, bool>> where)
@@ -110,14 +83,14 @@ namespace Timescales.Controllers.Helpers
             if (ascending)
             {
                 return _context.Timescales
-                           .Where(where)
-                           .OrderBy(orderBy);
+                               .Where(where)
+                               .OrderBy(orderBy);
             }
             else
             {
                 return _context.Timescales
-                           .Where(where)
-                           .OrderByDescending(orderBy);
+                               .Where(where)
+                               .OrderByDescending(orderBy);
             }            
         }
 
@@ -139,7 +112,9 @@ namespace Timescales.Controllers.Helpers
 
         private bool DeleteAsync(Timescale timescale)
         {
-            _context.Timescales.Remove(timescale);
+            _context.Timescales
+                    .Remove(timescale);
+
             _context.SaveChanges();
 
             return true;

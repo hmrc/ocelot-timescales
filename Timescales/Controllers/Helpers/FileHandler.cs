@@ -16,10 +16,7 @@ namespace Timescales.Controllers.Helpers
             _logger = logger;
         }
 
-        public Task<bool> CreateFile(string publishFile, string data)
-        {
-            return Task.Run(() => CreateFileAsync(publishFile, data));            
-        }
+        public Task<bool> CreateFile(string publishFile, string data) => Task.Run(() => CreateFileAsync(publishFile, data));
 
         private bool CreateFileAsync(string publishFile, string data)
         {

@@ -21,10 +21,7 @@ namespace Timescales.Controllers.Helpers
             _timescaleDataHandler = timescaleDataHandler;
         }
 
-        public Task<bool> Publish()
-        {
-            return Task.Run(() => PublishAsync());
-        }
+        public Task<bool> Publish() => Task.Run(() => PublishAsync());
 
         private bool PublishAsync()
         {

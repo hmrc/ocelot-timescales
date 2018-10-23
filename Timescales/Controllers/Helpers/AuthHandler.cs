@@ -17,10 +17,7 @@ namespace Timescales.Controllers.Helpers
             _logger = logger;
         }
 
-        public Task<bool> IsAuthedRole(string pid)
-        {
-            return Task.Run(() => IsAuthedRoleAsync(pid));
-        }
+        public Task<bool> IsAuthedRole(string pid) => Task.Run(() => IsAuthedRoleAsync(pid));
 
         private bool IsAuthedRoleAsync(string pid)
         {

@@ -18,10 +18,7 @@ namespace Timescales.Controllers.Helpers
             _logger = logger;
         }
 
-        public Task<bool> Post(string action, Timescale timescale, string user)
-        {
-            return Task.Run(() => PostAsync(action, timescale, user));            
-        }
+        public Task<bool> Post(string action, Timescale timescale, string user) => Task.Run(() => PostAsync(action, timescale, user));
 
         private bool PostAsync(string action, Timescale timescale, string user)
         {
