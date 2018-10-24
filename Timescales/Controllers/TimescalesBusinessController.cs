@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Timescales.Controllers.Helpers;
@@ -41,8 +40,8 @@ namespace Timescales.Controllers
             ViewData["DescriptionSortParm"] = sortOrder == "Description" ? "description_desc" : "Description";
             ViewData["LineOfBusinessParm"] = sortOrder == "LineOfBusiness" ? "lineOfBusiness_desc" : "LineOfBusiness";
 
-            Expression<Func<Timescale, bool>> where;
-            Expression<Func<Timescale, string>> orderby;
+            Expression<Func<Timescale, bool>> where = s => s.Owners.Contains(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
+            Expression<Func<Timescale, string>> orderby = t => t.Name;
             var ascending = true;
 
             if (sortOrder != null)
@@ -73,10 +72,6 @@ namespace Timescales.Controllers
                               ) && 
                               s.Owners.Contains(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
             }
-            else
-            {
-                where = s => s.Owners.Contains(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
-            }
 
             switch (sortOrder)
             {
@@ -91,9 +86,6 @@ namespace Timescales.Controllers
                     break;
                 case string val when val.ToLower().Contains("lineofbusiness"):
                     orderby = t => t.LineOfBusiness;
-                    break;
-                default:
-                    orderby = t => t.Name;
                     break;
             }
 

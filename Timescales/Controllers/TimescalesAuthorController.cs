@@ -43,8 +43,8 @@ namespace Timescales.Controllers
             ViewData["DescriptionSortParm"] = sortOrder == "Description" ? "description_desc" : "Description";
             ViewData["LineOfBusinessParm"] = sortOrder == "LineOfBusiness" ? "lineOfBusiness_desc" : "LineOfBusiness";
 
-            Expression<Func<Timescale, bool>> where;
-            Expression<Func<Timescale, string>> orderby;
+            Expression<Func<Timescale, bool>> where = s => s.Id != null;
+            Expression<Func<Timescale, string>> orderby = t => t.Name;
             var ascending = true;
 
             if (searchString != null)
@@ -73,10 +73,6 @@ namespace Timescales.Controllers
                              s.Placeholder.ToUpper().Contains(searchString.ToUpper()) ||
                              s.LineOfBusiness.ToUpper().Contains(searchString.ToUpper());
             }
-            else
-            {
-                 where = s => s.Id != null;
-            }
 
             switch (sortOrder)
             {
@@ -91,10 +87,7 @@ namespace Timescales.Controllers
                     break;
                 case string val when val.ToLower().Contains("lineofbusiness"):
                     orderby = t => t.LineOfBusiness;
-                    break;                     
-                default:
-                    orderby = t => t.Name;                  
-                    break;
+                    break;   
             }
 
             int pageSize = 20;
