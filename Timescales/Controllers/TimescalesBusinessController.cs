@@ -75,9 +75,6 @@ namespace Timescales.Controllers
 
             switch (sortOrder)
             {
-                case string val when val.ToLower().Contains("name"):
-                    orderby = t => t.Name;
-                    break;
                 case string val when val.ToLower().Contains("placeholder"):
                     orderby = t => t.Placeholder;
                     break;
