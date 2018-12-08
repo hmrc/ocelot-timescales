@@ -3,30 +3,30 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Timescales.Controllers.Helpers.Interfaces;
+using Timescales.Interfaces;
 using Timescales.Models;
 
 namespace Timescales.Api
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class TimescalesController : ControllerBase
     {
         private readonly ILogger<TimescalesController> _logger;
-        private readonly ITimescaleDataHandler _timescaleDataHandler;
+        private readonly ITimescaleRepository _timescaleRepository;
 
         public TimescalesController(ILogger<TimescalesController> logger,
-                                            ITimescaleDataHandler timescaleDataHandler)
+                                    ITimescaleRepository timescaleRepository)
         {
             _logger = logger;
-            _timescaleDataHandler = timescaleDataHandler;
+            _timescaleRepository = timescaleRepository;
         }
         
         // GET: api/Timescales      
         [HttpGet]   
         public async Task<IEnumerable<Timescale>> GetTimescales()
         {
-            return await _timescaleDataHandler.GetMany();
+            return await _timescaleRepository.GetMany();
         }
 
         // GET: api/Timescales/5
@@ -38,7 +38,7 @@ namespace Timescales.Api
                 return BadRequest(ModelState);
             }
 
-            var timescale = await _timescaleDataHandler.Get(id);
+            var timescale = await _timescaleRepository.Get(id);
 
             if (timescale == null)
             {

@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Timescales.Models;
 
-namespace Timescales.Controllers.Helpers.Interfaces
+namespace Timescales.Interfaces
 {
-    public interface ITimescaleDataHandler
+    public interface ITimescaleRepository
     {
         Task<Timescale> Get(Guid? id);
 

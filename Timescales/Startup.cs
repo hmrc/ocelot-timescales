@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using Timescales.Controllers.Helpers;
-using Timescales.Controllers.Helpers.Interfaces;
+using Timescales.Repositories;
+using Timescales.Interfaces;
 using Timescales.Models;
 
 namespace Timescales
@@ -40,12 +40,12 @@ namespace Timescales
             services.AddAuthentication(HttpSysDefaults.AuthenticationScheme);   
             services.AddMvc();
 
-            services.AddScoped<IAuditDataHandler, AuditDataHandler>();
-            services.AddScoped<IPublishHandler, PublishHandler>();
-            services.AddScoped<ILegacyPublishHandler, LegacyPublishHandler>();
-            services.AddScoped<IFileHandler, FileHandler>();
-            services.AddScoped<IAuthHandler, AuthHandler>();
-            services.AddScoped<ITimescaleDataHandler, TimescaleDataHandler>();
+            services.AddScoped<IAuditRepository, AuditRepository>();
+            services.AddScoped<IPublishRepository, PublishRepository>();
+            services.AddScoped<ILegacyPublishRepository, LegacyPublishRepository>();
+            services.AddScoped<IFileRepository, FileRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<ITimescaleRepository, TimescaleRepository>();
 
             services.Configure<IISOptions>(c =>
             {

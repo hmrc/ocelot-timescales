@@ -1,26 +1,24 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
-using Timescales.Controllers.Helpers.Interfaces;
+using Timescales.Interfaces;
 using Timescales.Models;
 
-namespace Timescales.Controllers.Helpers
+namespace Timescales.Repositories
 {
-    public class AuditDataHandler : IAuditDataHandler
+    public class AuditRepository : IAuditRepository
     {
         private readonly Context _context;
-        private readonly ILogger<AuditDataHandler> _logger;
+        private readonly ILogger<AuditRepository> _logger;
 
-        public AuditDataHandler(Context context, 
-                                    ILogger<AuditDataHandler> logger)
+        public AuditRepository(Context context, 
+                               ILogger<AuditRepository> logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        public Task<bool> Post(string action, Timescale timescale, string user) => Task.Run(() => PostAsync(action, timescale, user));
-
-        private bool PostAsync(string action, Timescale timescale, string user)
+        public async Task Post(string action, Timescale timescale, string user)
         {
             var audit = new Audit()
             {
@@ -33,9 +31,8 @@ namespace Timescales.Controllers.Helpers
             };
 
             _context.Add(audit);
-            _context.SaveChanges();
-
-            return true;
+            await _context.SaveChangesAsync();
+            return;
         }
     }
 }

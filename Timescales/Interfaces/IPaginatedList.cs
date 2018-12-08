@@ -1,4 +1,4 @@
-﻿namespace Timescales.Controllers.Helpers.Interfaces
+﻿namespace Timescales.Interfaces
 {
     public interface IPaginatedList
     {

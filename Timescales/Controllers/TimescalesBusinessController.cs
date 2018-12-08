@@ -5,7 +5,7 @@ using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Timescales.Controllers.Helpers;
-using Timescales.Controllers.Helpers.Interfaces;
+using Timescales.Interfaces;
 using Timescales.Models;
 
 namespace Timescales.Controllers
@@ -13,22 +13,22 @@ namespace Timescales.Controllers
     public class TimescalesBusinessController : Controller
     {
         private readonly ILogger<TimescalesBusinessController> _logger;        
-        private readonly IPublishHandler _publishHandler;
-        private readonly ILegacyPublishHandler _legacyPublishHandler;
-        private readonly IAuditDataHandler _auditDataHandler;
-        private readonly ITimescaleDataHandler _timescaleDataHandler;
+        private readonly IPublishRepository _publishRepository;
+        private readonly ILegacyPublishRepository _legacyPublishRepository;
+        private readonly IAuditRepository _auditRepository;
+        private readonly ITimescaleRepository _timescaleRepository;
 
         public TimescalesBusinessController(ILogger<TimescalesBusinessController> logger,                                                 
-                                                IPublishHandler publishHandler,
-                                                ILegacyPublishHandler legacyPublishHandler,
-                                                IAuditDataHandler auditDataHandler,
-                                                ITimescaleDataHandler timescaleDataHandler)
+                                            IPublishRepository publishRepository,
+                                            ILegacyPublishRepository legacyPublishRepository,
+                                            IAuditRepository auditRepository,
+                                            ITimescaleRepository timescaleRepository)
         {
-            _logger = logger;            
-            _publishHandler = publishHandler;
-            _legacyPublishHandler = legacyPublishHandler;
-            _auditDataHandler = auditDataHandler;
-            _timescaleDataHandler = timescaleDataHandler;
+            _logger = logger;
+            _publishRepository = publishRepository;
+            _legacyPublishRepository = legacyPublishRepository;
+            _auditRepository = auditRepository;
+            _timescaleRepository = timescaleRepository;
         }
 
         // GET: TimescalesBusiness       
@@ -87,7 +87,7 @@ namespace Timescales.Controllers
             }
 
             int pageSize = 20;
-            var timescales = await _timescaleDataHandler.GetMany(where, orderby, ascending);
+            var timescales = await _timescaleRepository.GetMany(where, orderby, ascending);
 
             return View(await PaginatedList<Timescale>.CreateAsync(timescales.AsNoTracking(), page ?? 1, pageSize));
         }
@@ -100,7 +100,7 @@ namespace Timescales.Controllers
                 return NotFound();
             }
 
-            var timescale = await _timescaleDataHandler.Get(id);
+            var timescale = await _timescaleRepository.Get(id);
 
             if (timescale == null)
             {
@@ -118,7 +118,7 @@ namespace Timescales.Controllers
                 return NotFound();
             }
 
-            var timescale = await _timescaleDataHandler.Get(id);
+            var timescale = await _timescaleRepository.Get(id);
 
             if (timescale == null)
             {
@@ -152,11 +152,11 @@ namespace Timescales.Controllers
                 {
                     timescale.UpdatedDate = DateTime.Now;
 
-                    await _timescaleDataHandler.Put(timescale);
+                    await _timescaleRepository.Put(timescale);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await _timescaleDataHandler.Exists(timescale.Id))
+                    if (!await _timescaleRepository.Exists(timescale.Id))
                     {
                         return NotFound();
                     }
@@ -166,9 +166,9 @@ namespace Timescales.Controllers
                     }
                 }
 
-                await _auditDataHandler.Post("Edit", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
-                await _publishHandler.Publish();
-                await _legacyPublishHandler.Publish(timescale.LineOfBusiness);
+                await _auditRepository.Post("Edit", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
+                await _publishRepository.Publish();
+                await _legacyPublishRepository.Publish(timescale.LineOfBusiness);
 
                 return RedirectToAction(nameof(Index));
             }

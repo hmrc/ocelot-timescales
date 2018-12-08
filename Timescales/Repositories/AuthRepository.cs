@@ -4,15 +4,15 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Xml;
-using Timescales.Controllers.Helpers.Interfaces;
+using Timescales.Interfaces;
 
-namespace Timescales.Controllers.Helpers
+namespace Timescales.Repositories
 {
-    public class AuthHandler : IAuthHandler
+    public class AuthRepository : IAuthRepository
     {
-        private readonly ILogger<AuthHandler> _logger;
+        private readonly ILogger<AuthRepository> _logger;
 
-        public AuthHandler(ILogger<AuthHandler> logger)
+        public AuthRepository(ILogger<AuthRepository> logger)
         {          
             _logger = logger;
         }

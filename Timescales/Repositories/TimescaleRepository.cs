@@ -5,18 +5,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Timescales.Controllers.Helpers.Interfaces;
+using Timescales.Interfaces;
 using Timescales.Models;
 
-namespace Timescales.Controllers.Helpers
+namespace Timescales.Repositories
 {
-    public class TimescaleDataHandler : ITimescaleDataHandler
+    public class TimescaleRepository : ITimescaleRepository
     {
         private readonly Context _context;
-        private readonly ILogger<TimescaleDataHandler> _logger;
+        private readonly ILogger<TimescaleRepository> _logger;
 
-        public TimescaleDataHandler(Context context,
-                                        ILogger<TimescaleDataHandler> logger)
+        public TimescaleRepository(Context context,
+                                   ILogger<TimescaleRepository> logger)
         {
             _context = context;
             _logger = logger;

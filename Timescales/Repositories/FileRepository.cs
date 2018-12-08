@@ -3,22 +3,22 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Timescales.Controllers.Helpers.Interfaces;
+using Timescales.Interfaces;
 
-namespace Timescales.Controllers.Helpers
+namespace Timescales.Repositories
 {
-    public class FileHandler : IFileHandler
+    public class FileRepository : IFileRepository
     {
-        private readonly ILogger<FileHandler> _logger;       
+        private readonly ILogger<FileRepository> _logger;       
 
-        public FileHandler(ILogger<FileHandler> logger)
+        public FileRepository(ILogger<FileRepository> logger)
         {           
             _logger = logger;
         }
 
-        public Task<bool> CreateFile(string publishFile, string data) => Task.Run(() => CreateFileAsync(publishFile, data));
+        public Task CreateFile(string publishFile, string data) => Task.Run(() => CreateFileAsync(publishFile, data));
 
-        private bool CreateFileAsync(string publishFile, string data)
+        private void CreateFileAsync(string publishFile, string data)
         {
             if (File.Exists(publishFile))
             {
@@ -31,7 +31,7 @@ namespace Timescales.Controllers.Helpers
                 fs.Write(info, 0, info.Length);
             }
 
-            return true;
+            return;
         }
     }
 }

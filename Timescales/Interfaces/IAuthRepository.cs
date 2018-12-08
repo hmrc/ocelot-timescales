@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace Timescales.Controllers.Helpers.Interfaces
+namespace Timescales.Interfaces
 {
-    public interface IAuthHandler
+    public interface IAuthRepository
     {
         Task<bool> IsAuthedRole(string pid);
     }

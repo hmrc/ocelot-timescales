@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Timescales.Controllers.Helpers.Interfaces;
+using Timescales.Interfaces;
 
 namespace Timescales.Controllers.Helpers
 {
