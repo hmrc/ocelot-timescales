@@ -99,6 +99,7 @@ namespace Timescales.Repositories
         public Task<bool> Exists(Guid id)
         {
             return _context.Timescales
+                           .Where(p => p.Id == id)
                            .AnyAsync();
         }
     }
