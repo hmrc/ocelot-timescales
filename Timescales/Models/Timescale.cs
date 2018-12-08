@@ -30,11 +30,6 @@ namespace Timescales.Models
         [DataType(DataType.Date)]
         public DateTime UpdatedDate { get; set; }
 
-        [DisplayName("Description")]
-        [Required(ErrorMessage = "Description Required")]
-        [MaxLength(256, ErrorMessage = "Description Too Long")]
-        public string Description { get; set; }
-
         [DisplayName("Owners")]
         [Required(ErrorMessage = "Owners Required")]
         [MinLength(7, ErrorMessage = "Owners Too Short")]
