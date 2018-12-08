@@ -35,14 +35,8 @@ namespace Timescales.Controllers
         }
 
         // GET: TimescalesAuthor  
-        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
-        {
-            ViewData["CurrentSort"] = sortOrder;
-            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewData["PlaceholderSortParm"] = sortOrder == "Placeholder" ? "placeholder_desc" : "Placeholder";
-            ViewData["DescriptionSortParm"] = sortOrder == "Description" ? "description_desc" : "Description";
-            ViewData["LineOfBusinessParm"] = sortOrder == "LineOfBusiness" ? "lineOfBusiness_desc" : "LineOfBusiness";
-
+        public async Task<IActionResult> Index(string currentFilter, string searchString, int? page)
+        { 
             Expression<Func<Timescale, bool>> where = s => s.Id != null;
             Expression<Func<Timescale, string>> orderby = t => t.Name;
             var ascending = true;
@@ -56,15 +50,7 @@ namespace Timescales.Controllers
                 searchString = currentFilter;
             }
 
-            ViewData["CurrentFilter"] = searchString;            
-
-            if (sortOrder != null)
-            {
-                if (sortOrder.Contains("_desc"))
-                {
-                    ascending = false;
-                }
-            }
+            ViewData["CurrentFilter"] = searchString; 
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -74,23 +60,20 @@ namespace Timescales.Controllers
                              s.LineOfBusiness.ToUpper().Contains(searchString.ToUpper());
             }
 
-            switch (sortOrder)
+            int pageSize = 20;            
+
+            try
             {
-                case string val when val.ToLower().Contains("placeholder"):
-                    orderby = t => t.Placeholder;
-                    break;
-                case string val when val.ToLower().Contains("description"):
-                    orderby = t => t.Description;
-                    break;
-                case string val when val.ToLower().Contains("lineofbusiness"):
-                    orderby = t => t.LineOfBusiness;
-                    break;   
+                var timescales = _timescaleRepository.GetMany(where, orderby, ascending);
+
+                return View(await PaginatedList<Timescale>.CreateAsync(timescales.AsNoTracking(), page ?? 1, pageSize));
             }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(500, ex.Message, ex);
 
-            int pageSize = 20;
-            var timescales = _timescaleRepository.GetMany(where, orderby, ascending);
-
-            return View(await PaginatedList<Timescale>.CreateAsync(timescales.AsNoTracking(), page ?? 1, pageSize));          
+                return StatusCode(500, ex.Message);
+            }
         }
 
         // GET: TimescalesAuthor/Details/5

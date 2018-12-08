@@ -12,28 +12,28 @@
 
 @using (Html.BeginForm())
 {
-    <p class="form-group">
+    <div class="form-group">
         @Html.TextBox("SearchString", null, new { @class = "form-control" })
-    <p class="form-text text-muted">Look for an existing timescale</p>
-    <input type="submit" class="btn btn-primary" value="Search" />
-    <a class="btn btn-primary" asp-action="Index">Back to Full List</a>
-    </p>
+        <p class="form-text text-muted">Look for an existing timescale</p>
+        <input type="submit" class="btn btn-primary" value="Search" />
+        <a class="btn btn-primary" asp-action="Index">Back to Full List</a>
+    </div>
 }
 
 <table class="table">
     <thead>
         <tr>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["PlaceholderSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Placeholder</a>              
+            <th>    
+                <p class="text-muted">Placeholder</p>
             </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Name</a>             
+            <th>  
+                <p class="text-muted">Name</p>
             </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["DescriptionSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Description</a>          
+            <th>  
+                <p class="text-muted">Description</p>
             </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["LineOfBusinessParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Line Of Business</a>        
+            <th> 
+                <p class="text-muted">Line Of Business</p>
             </th>
             <th></th>
         </tr>
