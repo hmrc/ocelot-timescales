@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 using NLog.Web;
 using System;
 
@@ -15,7 +16,6 @@ namespace Timescales
 
             try
             {
-                logger.Debug("init main");
                 BuildWebHost(args).Run();
             }
             catch (Exception ex)
@@ -37,9 +37,11 @@ namespace Timescales
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
-                    logging.SetMinimumLevel(LogLevel.Trace);
+                    logging.SetMinimumLevel(LogLevel.Debug);
+                    logging.AddConsole();
+                    logging.AddDebug();
+                    logging.AddNLog();
                 })
-                .UseNLog()  // NLog: setup NLog for Dependency injection
                 .Build();
     }
 }
