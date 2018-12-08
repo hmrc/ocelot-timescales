@@ -81,16 +81,25 @@ namespace Timescales.Controllers
             if (id == null)
             {
                 return NotFound();
-            }
+            }            
 
-            var timescale = await _timescaleRepository.Get(id);
-
-            if (timescale == null)
+            try
             {
-                return NotFound();
-            }
+                var timescale = await _timescaleRepository.Get(id);
 
-            return View(timescale);
+                if (timescale == null)
+                {
+                    return NotFound();
+                }
+
+                return View(timescale);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(500, ex.Message, ex);
+
+                return StatusCode(500, ex.Message);
+            }
         }       
 
         // GET: TimescalesBusiness/Edit/5
@@ -101,14 +110,23 @@ namespace Timescales.Controllers
                 return NotFound();
             }
 
-            var timescale = await _timescaleRepository.Get(id);
-
-            if (timescale == null)
+            try
             {
-                return NotFound();
-            }
+                var timescale = await _timescaleRepository.Get(id);
+
+                if (timescale == null)
+                {
+                    return NotFound();
+                }
            
-            return View(timescale);
+                return View(timescale);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(500, ex.Message, ex);
+
+                return StatusCode(500, ex.Message);
+            }
         }
 
         // POST: TimescalesBusiness/Edit/5
@@ -122,6 +140,14 @@ namespace Timescales.Controllers
             {
                 return NotFound();
             }
+            else if (!@User.Identity.IsAuthenticated)
+            {
+                return Unauthorized();
+            }
+            else if (!ModelState.IsValid)
+            {
+                return View(timescale);
+            }
             else if (!timescale.Owners.Contains(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)))
             {
                 ViewBag.UserMessage = "You are not authorised to edit this timescale.";
@@ -129,34 +155,39 @@ namespace Timescales.Controllers
                 return View(timescale);
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    timescale.UpdatedDate = DateTime.Now;
+            timescale.UpdatedDate = DateTime.Now;
 
-                    await _timescaleRepository.Put(timescale);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!await _timescaleRepository.Exists(timescale.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
+            try
+            {     
+                await _timescaleRepository.Put(timescale);
                 await _auditRepository.Post("Edit", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                if (!await _timescaleRepository.Exists(timescale.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    _logger.LogCritical(500, ex.Message, ex);
+                    return StatusCode(500, ex.Message);
+                }
+            }
+
+            try
+            {
                 await _publishRepository.Publish();
                 await _legacyPublishRepository.Publish(timescale.LineOfBusiness);
 
                 return RedirectToAction(nameof(Index));
             }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(500, ex.Message, ex);
 
-            return View(timescale);
+                return StatusCode(500, ex.Message);
+            }
         } 
     }
 }
