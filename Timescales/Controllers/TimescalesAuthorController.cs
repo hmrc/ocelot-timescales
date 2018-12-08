@@ -88,7 +88,7 @@ namespace Timescales.Controllers
             }
 
             int pageSize = 20;
-            var timescales = await _timescaleRepository.GetMany(where, orderby, ascending);
+            var timescales = _timescaleRepository.GetMany(where, orderby, ascending);
 
             return View(await PaginatedList<Timescale>.CreateAsync(timescales.AsNoTracking(), page ?? 1, pageSize));          
         }
@@ -259,7 +259,7 @@ namespace Timescales.Controllers
                 return NotFound();
             }
 
-            var timescale = await _timescaleRepository.GetIncludeChildObjects(id);
+            var timescale = await _timescaleRepository.Get(id);
 
             if (timescale == null)
             {

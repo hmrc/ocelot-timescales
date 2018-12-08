@@ -2,24 +2,24 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Timescales.Models;
 
 namespace Timescales.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20181008084938_8")]
-    partial class _8
+    [Migration("20181208192959_inital")]
+    partial class inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Timescales.Models.Audit", b =>
                 {
@@ -40,9 +40,13 @@ namespace Timescales.Migrations
 
                     b.Property<string>("User")
                         .IsRequired()
-                        .HasMaxLength(7);
+                        .IsFixedLength(true)
+                        .HasMaxLength(7)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TimescaleId");
 
                     b.ToTable("Audits");
                 });
@@ -87,6 +91,14 @@ namespace Timescales.Migrations
                         .IsUnique();
 
                     b.ToTable("Timescales");
+                });
+
+            modelBuilder.Entity("Timescales.Models.Audit", b =>
+                {
+                    b.HasOne("Timescales.Models.Timescale", "Timescale")
+                        .WithMany("Audit")
+                        .HasForeignKey("TimescaleId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -5,8 +5,11 @@ namespace Timescales.Models
     public class Context : DbContext
     {
         public Context(DbContextOptions<Context> options)
-        : base(options)
-        { }
+            : base(options)
+        {
+            //Database.EnsureCreated();
+        }
+
 
         public DbSet<Timescale> Timescales { get; set; }
 
@@ -19,9 +22,14 @@ namespace Timescales.Models
                 .IsUnique();
 
             modelBuilder.Entity<Timescale>()
-                .HasMany(e => e.Audit)
-                .WithOne(e => e.Timescale)
+                .HasMany(t => t.Audit)
+                .WithOne(t => t.Timescale)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Audit>()
+                        .Property(a => a.User)
+                        .IsFixedLength()
+                        .IsUnicode(false);
         }
     }
 }
