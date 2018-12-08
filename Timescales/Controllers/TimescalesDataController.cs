@@ -10,12 +10,12 @@ namespace Timescales.Api
 {
     [Route("[controller]")]
     [ApiController]
-    public class TimescalesController : ControllerBase
+    public class TimescalesDataController : ControllerBase
     {
-        private readonly ILogger<TimescalesController> _logger;
+        private readonly ILogger<TimescalesDataController> _logger;
         private readonly ITimescaleRepository _timescaleRepository;
 
-        public TimescalesController(ILogger<TimescalesController> logger,
+        public TimescalesDataController(ILogger<TimescalesDataController> logger,
                                     ITimescaleRepository timescaleRepository)
         {
             _logger = logger;
