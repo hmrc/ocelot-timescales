@@ -11,19 +11,19 @@ namespace Timescales.Interfaces
     {
         Task<Timescale> Get(Guid? id);
 
-        Task<Timescale> GetIncludeChildObjects(Guid? id);
+        Task<Timescale> Get(string placeholder);
 
         Task<IEnumerable<Timescale>> GetMany();
 
         Task<IEnumerable<Timescale>> GetMany(Expression<Func<Timescale, bool>> where);
 
-        Task<IQueryable<Timescale>> GetMany(Expression<Func<Timescale, bool>> where, Expression<Func<Timescale, string>> orderBy, bool ascending);       
+        IQueryable<Timescale> GetMany(Expression<Func<Timescale, bool>> where, Expression<Func<Timescale, string>> orderBy, bool ascending);       
 
-        Task<bool> Post(Timescale timescale);
+        Task Post(Timescale timescale);
 
-        Task<bool> Put(Timescale timescale);
+        Task Put(Timescale timescale);
 
-        Task<bool> Delete(Timescale timescale);
+        Task Delete(Timescale timescale);
 
         Task<bool> Exists(Guid id);
     }

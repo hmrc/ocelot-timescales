@@ -22,108 +22,84 @@ namespace Timescales.Repositories
             _logger = logger;
         }
 
-        public Task<Timescale> Get(Guid? id) => Task.Run(() => GetAsync(id));
-
-        public Task<Timescale> GetIncludeChildObjects(Guid? id) => Task.Run(() => GetIncludeChildObjectsAsync(id));
-
-        public Task<IEnumerable<Timescale>> GetMany() => Task.Run(() => GetManyAsync());
-
-        public Task<IEnumerable<Timescale>> GetMany(Expression<Func<Timescale, bool>> where) => Task.Run(() => GetManyAsync(where));
-
-        public Task<IQueryable<Timescale>> GetMany(Expression<Func<Timescale, bool>> where, Expression<Func<Timescale, string>> orderBy, bool ascending) => Task.Run(() => GetManyAsync(where, orderBy, ascending));
-
-        public Task<bool> Post(Timescale timescale) => Task.Run(() => PostAsync(timescale));
-
-        public Task<bool> Put(Timescale timescale) => Task.Run(() => PutAsync(timescale));
-
-        public Task<bool> Delete(Timescale timescale) => Task.Run(() => DeleteAsync(timescale));
-
-        public Task<bool> Exists(Guid id) => Task.Run(() => ExistsAsync(id));
-
-        private Timescale GetAsync(Guid? id)
+        public async Task<Timescale> Get(Guid? id)
         {
-            if (id == null)
-            {
-                return null;
-            }
-
-            return _context.Timescales
-                           .Where(t => t.Id == id)
-                           .FirstOrDefault();
+            return await _context.Timescales
+                                 .Include(t => t.Audit)
+                                 .Where(t => t.Id == id)
+                                 .FirstOrDefaultAsync();
         }
 
-        private Timescale GetIncludeChildObjectsAsync(Guid? id)
+        public async Task<Timescale> Get(string placeholder)
         {
-            if (id == null)
-            {
-                return null;
-            }
-
-            return _context.Timescales
-                           .Include(a => a.Audit)
-                           .Where(t => t.Id == id)
-                           .FirstOrDefault();
+            return await _context.Timescales
+                                 .Include(t => t.Audit)
+                                 .Where(t => t.Placeholder == placeholder)
+                                 .FirstOrDefaultAsync();
         }
 
-        private IEnumerable<Timescale> GetManyAsync()
+        public async Task<IEnumerable<Timescale>> GetMany()
         {
-            return _context.Timescales
-                           .ToList();
+            return await _context.Timescales
+                                 .Include(t => t.Audit)
+                                 .ToListAsync();
         }
 
-        private IEnumerable<Timescale> GetManyAsync(Expression<Func<Timescale, bool>> where)
+        public async Task<IEnumerable<Timescale>> GetMany(Expression<Func<Timescale, bool>> where)
         {
-            return _context.Timescales
-                           .Where(where)
-                           .ToList();
+            return await _context.Timescales
+                                 .Include(t => t.Audit)
+                                 .Where(where)
+                                 .ToListAsync();
         }
 
-        private IQueryable<Timescale> GetManyAsync(Expression<Func<Timescale, bool>> where, Expression<Func<Timescale, string>> orderBy, bool ascending)
+        public IQueryable<Timescale> GetMany(Expression<Func<Timescale, bool>> where, Expression<Func<Timescale, string>> orderBy, bool ascending)
         {
             if (ascending)
             {
                 return _context.Timescales
+                               .Include(t => t.Audit)
                                .Where(where)
                                .OrderBy(orderBy);
             }
             else
             {
                 return _context.Timescales
+                               .Include(t => t.Audit)
                                .Where(where)
                                .OrderByDescending(orderBy);
-            }            
+            }
         }
 
-        private bool PostAsync(Timescale timescale)
+        public async Task Post(Timescale timescale)
         {
             _context.Add(timescale);
-            _context.SaveChanges();
-
-            return true;
+            await _context.SaveChangesAsync();
+            return;
         }
 
-        private bool PutAsync(Timescale timescale)
+
+        public async Task Put(Timescale timescale)
         {
             _context.Update(timescale);
-            _context.SaveChanges();
-
-            return true;
+            await _context.SaveChangesAsync();
+            return;
         }
 
-        private bool DeleteAsync(Timescale timescale)
+        public async Task Delete(Timescale timescale)
         {
             _context.Timescales
                     .Remove(timescale);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            return true;
+            return;
         }
 
-        private bool ExistsAsync(Guid id)
+        public Task<bool> Exists(Guid id)
         {
             return _context.Timescales
-                           .Any(e => e.Id == id);
+                           .AnyAsync();
         }
     }
 }
