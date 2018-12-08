@@ -82,22 +82,40 @@ namespace Timescales.Controllers
             if (id == null)
             {
                 return NotFound();
-            }
+            }                       
 
-            var timescale = await _timescaleRepository.Get(id);
-
-            if (timescale == null)
+            try
             {
-                return NotFound();
-            }
+                var timescale = await _timescaleRepository.Get(id);
 
-            return View(timescale);
+                if (timescale == null)
+                {
+                    return NotFound();
+                }
+
+                return View(timescale);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(500, ex.Message, ex);
+
+                return StatusCode(500, ex.Message);
+            }
         }
 
         // GET: TimescalesAuthor/Create
         public IActionResult Create()
-        {
-            return View();
+        {   
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(500, ex.Message, ex);
+
+                return StatusCode(500, ex.Message);
+            }
         }
 
         // POST: TimescalesAuthor/Create
@@ -107,27 +125,39 @@ namespace Timescales.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Placeholder,Name,Description,Owners,OldestWorkDate,Days,Basis,LineOfBusiness")] Timescale timescale)
         {
-            if (!await _authRepository.IsAuthedRole(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)))
+            if (!@User.Identity.IsAuthenticated)
+            {
+                return Unauthorized();
+            }
+            else if (!ModelState.IsValid)
+            {
+                return View(timescale);
+            }
+            else if (!await _authRepository.IsAuthedRole(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)))
             {
                 ViewBag.UserMessage = "You are not authorised to create a timescale.";
 
                 return View(timescale);
             }
 
-            if (ModelState.IsValid)
-            {
                 timescale.Id = Guid.NewGuid();
                 timescale.UpdatedDate = DateTime.Now;
 
-                await _timescaleRepository.Post(timescale);              
+            try
+            {
+                await _timescaleRepository.Post(timescale);
                 await _auditRepository.Post("Create", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
                 await _publishRepository.Publish();
                 await _legacyPublishRepository.Publish(timescale.LineOfBusiness);
 
                 return RedirectToAction(nameof(Index));
             }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(500, ex.Message, ex);
 
-            return View(timescale);
+                return StatusCode(500, ex.Message);
+            }
         }
 
         // GET: TimescalesAuthor/Edit/5
@@ -138,14 +168,23 @@ namespace Timescales.Controllers
                 return NotFound();
             }
 
-            var timescale = await _timescaleRepository.Get(id);
-
-            if (timescale == null)
+            try
             {
-                return NotFound();
-            }
+                var timescale = await _timescaleRepository.Get(id);
 
-            return View(timescale);
+                if (timescale == null)
+                {
+                    return NotFound();
+                }
+
+                return View(timescale);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(500, ex.Message, ex);
+
+                return StatusCode(500, ex.Message);
+            }
         }
 
         // POST: TimescalesAuthor/Edit/5
@@ -159,6 +198,14 @@ namespace Timescales.Controllers
             {
                 return NotFound();
             }
+            else if (!@User.Identity.IsAuthenticated)
+            {
+                return Unauthorized();
+            }
+            else if (!ModelState.IsValid)
+            {
+                return View(timescale);
+            }
             else if (!await _authRepository.IsAuthedRole(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)))
             {
                 ViewBag.UserMessage = "You are not authorised to edit this timescale.";
@@ -166,34 +213,39 @@ namespace Timescales.Controllers
                 return View(timescale);
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    timescale.UpdatedDate = DateTime.Now;
+            timescale.UpdatedDate = DateTime.Now;
 
-                    await _timescaleRepository.Put(timescale);                  
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!await _timescaleRepository.Exists(timescale.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
+            try
+            {      
+                await _timescaleRepository.Put(timescale);
                 await _auditRepository.Post("Edit", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                if (!await _timescaleRepository.Exists(timescale.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    _logger.LogCritical(500, ex.Message, ex);
+                    return StatusCode(500, ex.Message);
+                }
+            }            
+
+            try
+            {
                 await _publishRepository.Publish();
                 await _legacyPublishRepository.Publish(timescale.LineOfBusiness);
 
                 return RedirectToAction(nameof(Index));
             }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(500, ex.Message, ex);
 
-            return View(timescale);
+                return StatusCode(500, ex.Message);
+            }
         }
 
         // GET: TimescalesAuthor/Delete/5
@@ -204,14 +256,23 @@ namespace Timescales.Controllers
                 return NotFound();
             }
 
-            var timescale = await _timescaleRepository.Get(id);
-
-            if (timescale == null)
+            try
             {
-                return NotFound();
-            }
+                var timescale = await _timescaleRepository.Get(id);
 
-            return View(timescale);
+                if (timescale == null)
+                {
+                    return NotFound();
+                }
+
+                return View(timescale);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(500, ex.Message, ex);
+
+                return StatusCode(500, ex.Message);
+            }
         }
 
         // POST: TimescalesAuthor/Delete/5
@@ -219,20 +280,50 @@ namespace Timescales.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var timescale = await _timescaleRepository.Get(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Timescale timescale;
+
+            try
+            {
+                timescale = await _timescaleRepository.Get(id);
+
+                if (timescale == null)
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(500, ex.Message, ex);
+
+                return StatusCode(500, ex.Message);
+            }
 
             if (!await _authRepository.IsAuthedRole(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1)))
             {
                 ViewBag.UserMessage = "You are not authorised to delete this timescale.";
 
                 return View(timescale);
+            }            
+
+            try
+            {
+                await _timescaleRepository.Delete(timescale);
+                await _publishRepository.Publish();
+                await _legacyPublishRepository.Publish(timescale.LineOfBusiness);
+
+                return RedirectToAction(nameof(Index));
             }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(500, ex.Message, ex);
 
-            await _timescaleRepository.Delete(timescale);     
-            await _publishRepository.Publish();
-            await _legacyPublishRepository.Publish(timescale.LineOfBusiness);
-
-            return RedirectToAction(nameof(Index));
+                return StatusCode(500, ex.Message);
+            }
         }
 
         public async Task<IActionResult> Audit(Guid? id)
@@ -241,15 +332,23 @@ namespace Timescales.Controllers
             {
                 return NotFound();
             }
-
-            var timescale = await _timescaleRepository.Get(id);
-
-            if (timescale == null)
+            try
             {
-                return NotFound();
-            }
+                var timescale = await _timescaleRepository.Get(id);
 
-            return View(timescale);
+                if (timescale == null)
+                {
+                    return NotFound();
+                }
+
+                return View(timescale);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(500, ex.Message, ex);
+
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }
