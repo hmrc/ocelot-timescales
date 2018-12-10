@@ -33,8 +33,10 @@
         @foreach (var item in Model.Audit)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User)
+                <td>               
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#OwnerModal" data-whatever="@item.User">
+                        @Html.DisplayFor(modelItem => item.User)
+                    </button>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Action)
@@ -52,6 +54,45 @@
         }
     </tbody>
 </table>
+
+<div class="modal fade" id="OwnerModal" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Person details.</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <label class="control-label">PID</label>
+                        <input id="modalPid" class="form-control" disabled />
+
+                        <label class="control-label">Name</label>
+                        <input id="modalName" class="form-control" disabled />
+
+                        <label class="control-label">Phone</label>
+                        <input id="modalPhone" class="form-control" disabled />
+
+                        <label class="control-label">Email</label>
+                        <input id="modalEmail" class="form-control" disabled />
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <div>
     <a class="btn btn-primary" asp-action="Details" asp-route-id="@Model.Id">Back to Details</a>   
