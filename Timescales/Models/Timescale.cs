@@ -50,6 +50,10 @@ namespace Timescales.Models
         [MaxLength(10, ErrorMessage = "Basis Too Long")]
         public string Basis { get; set; }
 
+        [DisplayName("Site")]
+        [Required(ErrorMessage = "Site Required")]
+        [MaxLength(10, ErrorMessage = "Site Too Long")]
+        public string Site { get; set; }
 
         private string _lineOfBusiness;
 
