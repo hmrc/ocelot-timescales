@@ -25,13 +25,16 @@
 <table class="table">
     <thead>
         <tr>
-            <th>    
+            <th>
                 <p class="text-muted">Placeholder</p>
             </th>
-            <th>  
+            <th>
                 <p class="text-muted">Name</p>
             </th>
-            <th> 
+            <th>
+                <p class="text-muted">Site</p>
+            </th>
+            <th>
                 <p class="text-muted">Line Of Business</p>
             </th>
             <th></th>
@@ -40,21 +43,24 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Placeholder)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LineOfBusiness)
-                </td>
-                <td>
-                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Placeholder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Site)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LineOfBusiness)
+            </td>
+            <td>
+                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

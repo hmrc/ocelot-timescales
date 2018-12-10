@@ -53,6 +53,7 @@ namespace Timescales.Controllers
             {
                 where = s => (s.Name.ToUpper().Contains(searchString.ToUpper()) ||
                               s.Placeholder.ToUpper().Contains(searchString.ToUpper()) ||
+                              s.Site.ToUpper().Contains(searchString.ToUpper()) ||
                               s.LineOfBusiness.ToUpper().Contains(searchString.ToUpper())
                               ) && 
                               s.Owners.Contains(@User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
