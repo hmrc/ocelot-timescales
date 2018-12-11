@@ -177,8 +177,8 @@ namespace Timescales.Controllers
 
             try
             {
-                await _publishRepository.Publish();
-                await _legacyPublishRepository.Publish(timescale.LineOfBusiness);
+                await _publishRepository.Publish(timescale);
+                await _legacyPublishRepository.Publish(timescale);
 
                 return RedirectToAction(nameof(Index));
             }

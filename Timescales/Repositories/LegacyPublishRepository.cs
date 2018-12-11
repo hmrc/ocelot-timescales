@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Timescales.Interfaces;
+using Timescales.Models;
 
 namespace Timescales.Repositories
 {
@@ -22,11 +23,18 @@ namespace Timescales.Repositories
             _timescaleRepository = timescaleRepository;
         }
               
-        public async Task Publish(string lineOfBusiness)
+        public async Task Publish(Timescale timescale)
         {
-            var publishFile = $"{Environment.GetEnvironmentVariable("LegacyTimescalesLocation", EnvironmentVariableTarget.Machine)}{lineOfBusiness}Timescales.xml";
+            if(timescale.Site != "CSG")
+            {
+                return;
+            }
 
-            var timescales = await _timescaleRepository.GetMany(t => t.LineOfBusiness == lineOfBusiness);
+            var publishFile = $"{Environment.GetEnvironmentVariable("TimescalesLocation", EnvironmentVariableTarget.Machine)}" +
+                                    $"{timescale.Site}-{timescale.LineOfBusiness}-Timescales.xml";
+          
+            var timescales = await _timescaleRepository.GetMany(t => t.LineOfBusiness == timescale.LineOfBusiness &&
+                                                                     t.Site == timescale.Site);
 
             XElement export = new XElement("domroot",
                                     new XElement("Entry",

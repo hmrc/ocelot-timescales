@@ -147,8 +147,8 @@ namespace Timescales.Controllers
             {
                 await _timescaleRepository.Post(timescale);
                 await _auditRepository.Post("Create", timescale, @User.Identity.Name.Substring(@User.Identity.Name.IndexOf(@"\") + 1));
-                await _publishRepository.Publish();
-                await _legacyPublishRepository.Publish(timescale.LineOfBusiness);
+                await _publishRepository.Publish(timescale);
+                await _legacyPublishRepository.Publish(timescale);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -235,8 +235,8 @@ namespace Timescales.Controllers
 
             try
             {
-                await _publishRepository.Publish();
-                await _legacyPublishRepository.Publish(timescale.LineOfBusiness);
+                await _publishRepository.Publish(timescale);
+                await _legacyPublishRepository.Publish(timescale);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -313,8 +313,8 @@ namespace Timescales.Controllers
             try
             {
                 await _timescaleRepository.Delete(timescale);
-                await _publishRepository.Publish();
-                await _legacyPublishRepository.Publish(timescale.LineOfBusiness);
+                await _publishRepository.Publish(timescale);
+                await _legacyPublishRepository.Publish(timescale);
 
                 return RedirectToAction(nameof(Index));
             }

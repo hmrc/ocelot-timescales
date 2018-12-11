@@ -22,8 +22,8 @@ Variable Name: CmsIndex
 Variable Value: [LOCATION]\[FILENAME].htm
 --------------------------------------------------------------------------------------
 Environment: Live/Dev
-Variable Name: TimescalesFile
-Variable Value: [LOCATION]\[FILENAME].json
+Variable Name: TimescalesLocation
+Variable Value: [LOCATION]\
 --------------------------------------------------------------------------------------
 Environment: Live
 Variable Name: AppleTouchIcon 
@@ -45,10 +45,7 @@ Environment: Live
 Variable Name: Favicon 
 Variable Value: [LOCATION]\[FILENAME].ico
 --------------------------------------------------------------------------------------
-Environment: Live/Dev
-Variable Name: LegacyTimescalesLocation 
-Variable Value: [LOCATION]\
---------------------------------------------------------------------------------------
+
 
 
 

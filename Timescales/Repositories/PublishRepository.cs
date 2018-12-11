@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 using Timescales.Interfaces;
+using Timescales.Models;
 
 namespace Timescales.Repositories
 {
@@ -21,17 +22,17 @@ namespace Timescales.Repositories
             _timescaleRepository = timescaleRepository;
         }
 
-        public Task Publish() => Task.Run(() => PublishAsync());
+        public Task Publish(Timescale timescale) => Task.Run(() => PublishAsync(timescale));
 
-        private void PublishAsync()
+        private async void PublishAsync(Timescale timescale)
         {
-            //todo
+            var publishFile = $"{Environment.GetEnvironmentVariable("TimescalesLocation", EnvironmentVariableTarget.Machine)}" +
+                                    $"{timescale.Site}-Timescales.json";
 
-            //var publishFile = Environment.GetEnvironmentVariable("TimescalesFile", EnvironmentVariableTarget.Machine);
-            //var timescales = _timescaleRepository.GetMany();
-           // var timescalesJson = JsonConvert.SerializeObject(timescales);
+            var timescales = await _timescaleRepository.GetMany(t => t.Site == timescale.Site);
+            var timescalesJson = JsonConvert.SerializeObject(timescales);
 
-            //_fileRepository.CreateFile(publishFile, timescalesJson);
+            await _fileRepository.CreateFile(publishFile, timescalesJson);
 
             return;
         }
