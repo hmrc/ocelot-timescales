@@ -32,10 +32,19 @@
                 <label asp-for="Basis" class="control-label"></label>
                 <select asp-for="Basis" class="form-control">
                     <option value="Working">Working</option>
-                    <option value="Calender">Calender</option>
+                    <option value="Calendar">Calendar</option>
                     <option value="Notbh">Notbh</option>
                 </select>
                 <span asp-validation-for="Basis" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Site" class="control-label"></label>
+                <select asp-for="Site" class="form-control">
+                    <option value="CSTD">CSTD</option>
+                    <option value="CSG">CSG</option>
+                    <option value="CCG">CCG</option>
+                </select>
+                <span asp-validation-for="Site" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LineOfBusiness" class="control-label"></label>

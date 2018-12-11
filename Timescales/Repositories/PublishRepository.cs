@@ -25,11 +25,13 @@ namespace Timescales.Repositories
 
         private void PublishAsync()
         {
-            var publishFile = Environment.GetEnvironmentVariable("TimescalesFile", EnvironmentVariableTarget.Machine);
-            var timescales = _timescaleRepository.GetMany();
-            var timescalesJson = JsonConvert.SerializeObject(timescales);
+            //todo
 
-            _fileRepository.CreateFile(publishFile, timescalesJson);
+            //var publishFile = Environment.GetEnvironmentVariable("TimescalesFile", EnvironmentVariableTarget.Machine);
+            //var timescales = _timescaleRepository.GetMany();
+           // var timescalesJson = JsonConvert.SerializeObject(timescales);
+
+            //_fileRepository.CreateFile(publishFile, timescalesJson);
 
             return;
         }
