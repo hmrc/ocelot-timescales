@@ -25,6 +25,11 @@ namespace Timescales.Models
         [MaxLength(256, ErrorMessage = "Name Too Long")]
         public string Name { get; set; }
 
+        [DisplayName("Description")]
+        [Required(ErrorMessage = "Description Required")]
+        [MaxLength(256, ErrorMessage = "Description Too Long")]
+        public string Description { get; set; }
+
         [DisplayName("Updated Date")]
         [Required(ErrorMessage = "Updated Date Required")]
         [DataType(DataType.Date)]

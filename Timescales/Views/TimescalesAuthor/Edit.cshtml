@@ -32,6 +32,11 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Owners" class="control-label"></label>
                 <input asp-for="Owners" class="form-control" />
                 <span asp-validation-for="Owners" class="text-danger"></span>
