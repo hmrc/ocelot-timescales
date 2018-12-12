@@ -24,7 +24,7 @@ namespace Timescales.Repositories
 
         public Task Publish(Timescale timescale) => Task.Run(() => PublishAsync(timescale));
 
-        private async void PublishAsync(Timescale timescale)
+        private async Task PublishAsync(Timescale timescale)
         {
             var publishFile = $"{Environment.GetEnvironmentVariable("TimescalesLocation", EnvironmentVariableTarget.Machine)}" +
                                     $"{timescale.Site}-Timescales.json";
