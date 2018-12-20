@@ -1,7 +1,35 @@
-﻿function getOwnerData(ownerPid) {
+﻿function getOwnerNames(page) {
 
-    var url = "../../ad/api/loggedinuser/" + ownerPid;
- 
+    var ownerPid = $("#Owners").val();  
+  
+    if (ownerPid === "") {
+        return;
+    }
+
+    ownerPid.split(",").forEach(function (pid) {
+
+        $.when(getOwnerData(pid, page))
+            .done(function (data) {
+                $("#productOwnerName").append(data.name + " ");           
+            })
+            .fail(function () {
+                $("#productOwnerName").append("PID not found ");    
+            });
+    });     
+}
+
+function getOwnerData(ownerPid, page) {
+
+    var url;
+
+    if (page === "Create") {
+        url = "../../ad/api/loggedinuser/" + ownerPid;
+    } else if (page === "Edit") {
+        url = "../../../ad/api/loggedinuser/" + ownerPid;
+    } else if (page === "Audit") {
+        url = "../../ad/api/loggedinuser/" + ownerPid;
+    }    
+        
     return $.get(url);
 }
 
@@ -29,8 +57,9 @@ $('#OwnerModal').on('show.bs.modal', function (event) {
 
     var button = $(event.relatedTarget);
     var owner = button.data('whatever');
+    var page = button.data('page');
 
-    getOwnerData(owner)
+    getOwnerData(owner, page)
         .done(function (data) {
             showUserData(data);
         })
@@ -38,4 +67,3 @@ $('#OwnerModal').on('show.bs.modal', function (event) {
             showUserData();
         });
 });
-

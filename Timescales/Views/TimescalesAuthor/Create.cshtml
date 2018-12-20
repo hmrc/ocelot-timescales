@@ -30,8 +30,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Owners" class="control-label"></label>
-                <input asp-for="Owners" class="form-control" />
+                <input asp-for="Owners" onblur="getOwnerNames('Create')" class="form-control" />
                 <span asp-validation-for="Owners" class="text-danger"></span>
+                <div id="productOwnerName"></div>
             </div>
             <div class="form-group">
                 <label asp-for="Basis" class="control-label"></label>
