@@ -38,7 +38,7 @@ namespace Timescales.Api
                 return BadRequest(ModelState);
             }
 
-            var timescale = await _timescaleRepository.Get(id);
+            var timescale = await _timescaleRepository.Get(t => t.Id == id);
 
             if (timescale == null)
             {

@@ -9,9 +9,7 @@ namespace Timescales.Interfaces
 {
     public interface ITimescaleRepository
     {
-        Task<Timescale> Get(Guid? id);
-
-        Task<Timescale> Get(string placeholder);
+        Task<Timescale> Get(Expression<Func<Timescale, bool>> where);
 
         Task<IEnumerable<Timescale>> GetMany();
 

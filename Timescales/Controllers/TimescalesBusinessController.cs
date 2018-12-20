@@ -85,7 +85,7 @@ namespace Timescales.Controllers
 
             try
             {
-                var timescale = await _timescaleRepository.Get(id);
+                var timescale = await _timescaleRepository.Get(t => t.Id == id);
 
                 if (timescale == null)
                 {
@@ -112,7 +112,7 @@ namespace Timescales.Controllers
 
             try
             {
-                var timescale = await _timescaleRepository.Get(id);
+                var timescale = await _timescaleRepository.Get(t => t.Id == id);
 
                 if (timescale == null)
                 {

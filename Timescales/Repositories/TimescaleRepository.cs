@@ -22,19 +22,11 @@ namespace Timescales.Repositories
             _logger = logger;
         }
 
-        public async Task<Timescale> Get(Guid? id)
+        public async Task<Timescale> Get(Expression<Func<Timescale, bool>> where)
         {
             return await _context.Timescales
                                  .Include(t => t.Audit)
-                                 .Where(t => t.Id == id)
-                                 .FirstOrDefaultAsync();
-        }
-
-        public async Task<Timescale> Get(string placeholder)
-        {
-            return await _context.Timescales
-                                 .Include(t => t.Audit)
-                                 .Where(t => t.Placeholder == placeholder)
+                                 .Where(where)
                                  .FirstOrDefaultAsync();
         }
 
