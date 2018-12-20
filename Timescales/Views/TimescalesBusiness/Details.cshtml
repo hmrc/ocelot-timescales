@@ -48,7 +48,9 @@
                     @Html.DisplayNameFor(model => model.Owners)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.Owners)
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#OwnerModalList" data-whatever="@Html.DisplayFor(model => model.Owners)" data-page="Details">
+                        @Html.DisplayFor(model => model.Owners)
+                    </button>
                 </td>
             </tr>
             <tr>

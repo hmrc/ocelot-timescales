@@ -8,8 +8,7 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
-        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
-        <partial name="/Views/Shared/_Modals.cshtml" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />       
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
@@ -19,13 +18,12 @@
         <link rel="icon" type="image/png" sizes="32x32" href="@Environment.GetEnvironmentVariable("Favicon32x32", EnvironmentVariableTarget.Machine)">
         <link rel="icon" type="image/png" sizes="16x16" href="@Environment.GetEnvironmentVariable("Favicon16x16", EnvironmentVariableTarget.Machine)">
         <link rel="mask-icon" color="#01928c" href="@Environment.GetEnvironmentVariable("SafariPinnedTab", EnvironmentVariableTarget.Machine)">
-        <link rel="shortcut icon" href="@Environment.GetEnvironmentVariable("Favicon", EnvironmentVariableTarget.Machine)">
-        <partial name="/Views/Shared/_Modals.cshtml" />
+        <link rel="shortcut icon" href="@Environment.GetEnvironmentVariable("Favicon", EnvironmentVariableTarget.Machine)">        
     </environment>
 </head>
 
 <body style="background-color: #e5f7ff;">
-    
+
     <nav class="navbar bg-primary fixed-top">
         <form class="form-inline">
             <a class="navbar-brand" href="@Environment.GetEnvironmentVariable("CmsIndex", EnvironmentVariableTarget.Machine)"><i class="fa fa-paw" aria-hidden="true"></i> &nbsp;ocelot.<span class="text-muted">@ViewData["Header"]</span><span style="display:none;" id="dev">.Development</span></a>
@@ -38,12 +36,14 @@
             </div>
         </form>
 
-    </nav>  
+    </nav>
 
     <div class="container body-content">
         @RenderBody()
-        <hr />        
+        <hr />
     </div>
+
+    <partial name="/Views/Shared/_Modals.cshtml" />
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
