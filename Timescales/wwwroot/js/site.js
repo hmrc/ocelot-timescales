@@ -80,41 +80,6 @@ function addUserData(ownerDetails) {
     }
 }
 
-function showUserData(ownerDetails) {
-
-    if (ownerDetails === undefined) {
-        $("#modalPid").val("PID not found");
-        $("#modalName").val("Name not found");
-        $("#modalPhone").val("Phone not found");
-        $("#modalEmail").val("Email not found");
-    } else {
-        $("#modalPid").val(ownerDetails.pid);
-        $("#modalName").val(ownerDetails.name);
-        $("#modalPhone").val(ownerDetails.phoneNumber);
-        $("#modalEmail").val(ownerDetails.email);
-    }
-}
-
-$('#OwnerModal').on('show.bs.modal', function (event) {
-
-    $("#modalPid").val("");
-    $("#modalName").val("");
-    $("#modalPhone").val("");
-    $("#modalEmail").val("");
-
-    var button = $(event.relatedTarget);
-    var owner = button.data('whatever');
-    var page = button.data('page');
-
-    getOwnerData(owner, page)
-        .done(function (data) {
-            showUserData(data);
-        })
-        .fail(function () {
-            showUserData();
-        });
-});
-
 $('#OwnerModalList').on('show.bs.modal', function (event) {
 
     $("#body").empty();
@@ -123,14 +88,23 @@ $('#OwnerModalList').on('show.bs.modal', function (event) {
     var owners = button.data('whatever');
     var page = button.data('page');
 
-    owners.split(",").forEach(function (pid) {
-
-        $.when(getOwnerData(pid, page))
+    if (owners.length > 7) {
+        owners.split(",").forEach(function (pid) {
+            $.when(getOwnerData(pid, page))
+                .done(function (data) {
+                    addUserData(data);
+                })
+                .fail(function () {
+                    addUserData();
+                });
+        });
+    } else {
+        $.when(getOwnerData(owners, page))
             .done(function (data) {
                 addUserData(data);
             })
             .fail(function () {
                 addUserData();
             });
-    });  
+    }      
 });
